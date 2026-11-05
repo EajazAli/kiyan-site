@@ -424,13 +424,13 @@ main { padding-top: 0; }
 .hero__wave { height: 70%; opacity: .85; }
 .hero__copy::before { display: none; }
 .hero__top { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(24px, 4vw, 64px); align-items: end; padding-top: clamp(24px, 6vh, 80px); }
-.hero__title { margin: 0; font-size: clamp(3.4rem, .6rem + 8.4vw, 9.2rem); line-height: .94; letter-spacing: -0.05em; font-weight: 600; }
-.hero__title .line { display: block; overflow: hidden; padding-right: .08em; margin-right: -.08em; }
+.hero__title { margin: 0; font-size: clamp(4rem, .4rem + 11vw, 11.5rem); line-height: .9; letter-spacing: -0.05em; font-weight: 600; }
+.hero__title .line { display: block; overflow: hidden; padding: 0 .08em .18em 0; margin: 0 -.08em -.18em 0; }
 .hero__title .line > span { display: inline-block; transform: translateY(110%); animation: lineup 1s var(--ease) forwards; }
 .hero__title .line:nth-child(2) > span { animation-delay: .08s } .hero__title .line:nth-child(3) > span { animation-delay: .16s } .hero__title .line:nth-child(4) > span { animation-delay: .24s }
 @keyframes lineup { to { transform: none; } }
 .hero__side { display: grid; gap: 28px; justify-items: end; text-align: right; animation: rise .9s var(--ease) both .3s; }
-.statement { font-size: clamp(1.25rem, 1rem + 1.2vw, 2rem); line-height: 1.25; letter-spacing: -0.025em; font-weight: 600; color: #8d919c; max-width: 24ch; margin: 0; text-wrap: balance; }
+.statement { font-size: clamp(1.3rem, 1rem + 1.4vw, 2.2rem); line-height: 1.25; letter-spacing: -0.025em; font-weight: 600; color: #8d919c; max-width: 24ch; margin: 0; text-wrap: balance; }
 .statement strong { color: #fff; font-weight: 600; }
 .statement--center { text-align: center; max-width: 34ch; margin-inline: auto; color: #8a8a8a; }
 .section--light .statement strong { color: var(--ink); }
@@ -486,7 +486,7 @@ main { padding-top: 0; }
   .section--cards .questions { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; } .section--cards .q { margin-inline: 0; --r: 0deg; --y: 0; min-height: 0; }
 }
 @media (max-width: 640px) {
-  .hero__title { font-size: clamp(3rem, 16vw, 4.4rem); }
+  .hero__title { font-size: clamp(3.6rem, 19vw, 5rem); }
   .section--cards .questions { grid-template-columns: 1fr 1fr; }
   .hero__cta .btn { width: 100%; } .hero__cta-label { margin-right: 0; width: 100%; }
 }

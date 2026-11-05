@@ -15,7 +15,7 @@
 <div class="progress" aria-hidden="true"><span id="progress"></span></div>
 
 <header class="nav" id="nav">
-  <div class="wrap nav__bar">
+  <div class="nav__pill">
     <a class="nav__logo" href="#top" aria-label="Kiyan home"><img src="assets/kiyan-logo-white.svg" alt="Kiyan" width="104" height="43"></a>
     <nav class="nav__links" aria-label="Main" data-spy><span class="nav__ind" aria-hidden="true"></span>
       <a href="#gap">The gap</a>
@@ -26,8 +26,7 @@
     </nav>
     <div class="nav__actions">
       <a class="nav__lang" href="#" lang="ar" hreflang="ar">العربية</a>
-      <a class="btn btn--ghost" href="#contact">Talk to us</a>
-      <a class="btn btn--primary" href="#poc">Start a free POC<svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></a>
+      <a class="btn btn--primary" href="#poc"><span class="btn__disc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg></span>Start a free POC</a>
     </div>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
   </div>
@@ -42,41 +41,21 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero__wave" aria-hidden="true"><canvas id="wave" class="hero__canvas"></canvas><img class="hero__wave-img" src="assets/img/wave.jpg" alt="" width="1500" height="844"></div>
-    <div class="wrap hero__grid">
-      <div class="hero__copy">
-        <p class="eyebrow"><span class="eyebrow__dot"></span>Category management · Route to market · Shelf execution</p>
-        <h1>Where intelligence meets <span class="accent">execution.</span></h1>
-        <p class="lead">Knowing is not doing. The market is full of insight and short on action. Kiyan takes the strategy from the boardroom to the shelf and closes the loop every week.</p>
-        <div class="btn-row">
-          <a class="btn btn--primary btn--lg" href="#poc">Start a free POC<svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></a>
-          <a class="btn btn--outline btn--lg" href="#pillars">See the six pillars</a>
-        </div>
-        <ul class="hero__facts" aria-label="Key facts">
-          <li><strong><span data-count="5">0</span>M+</strong><span>outlets scanned, 3 markets</span></li>
-          <li><strong><span data-count="230">0</span>+</strong><span>cities covered in KSA</span></li>
-          <li><strong><span data-count="18">0</span>+</strong><span>years of census fieldwork</span></li>
-        </ul>
-      </div>
-
-      <div class="hero__visual" aria-hidden="true" data-tilt>
-        <div class="scene">
-          <div class="scene__photo"><img src="assets/img/store-audit.jpg" alt="" width="1280" height="960"></div>
-          <div class="float float--audit">
-            <span class="float__icon"><svg viewBox="0 0 24 24"><path d="M4 7h16v12H4zM9 7V5h6v2"/><circle cx="12" cy="13" r="3"/></svg></span>
-            <div><p class="float__title">Shelf audit, every week</p><p class="float__small">2 min per store · 96–98% accuracy</p></div>
-          </div>
-          <div class="float float--pillars">
-            <p class="float__title">Six pillars</p>
-            <ul class="float__list">
-              <li>Right Reach</li><li>Right Category</li><li>Right Range</li><li>Right Store</li><li>Right Space</li><li class="is-on">Right Execution</li>
-            </ul>
-          </div>
-          <div class="float float--gap">
-            <span class="chip">Gap to task</span>
-            <p class="float__big">Every gap becomes a ticket. Only closed tasks count.</p>
-          </div>
+    <div class="wrap hero__top">
+      <h1 class="hero__title"><span class="line"><span>Where</span></span><span class="line"><span>intelligence</span></span><span class="line"><span>meets</span></span><span class="line"><span class="accent">execution.</span></span></h1>
+      <div class="hero__side">
+        <p class="statement"><strong>Knowing is not doing. The market is full of insight and short on action.</strong> Kiyan takes the strategy from the boardroom to the shelf and closes the loop every week.</p>
+        <div class="hero__cta">
+          <span class="hero__cta-label">Next step:</span>
+          <a class="btn btn--primary btn--lg" href="#poc"><span class="btn__disc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg></span>Start a free POC</a>
+          <a class="btn btn--glass btn--lg" href="#pillars">See the six pillars</a>
         </div>
       </div>
+    </div>
+    <div class="wrap hero__rows">
+      <div class="row"><span class="row__label">We help:</span><span class="row__text">Manufacturers and retailers who own the shelf</span></div>
+      <div class="row"><span class="row__tag">( Right Reach )</span><span class="row__text">5M+ outlets scanned across 3 markets</span><a class="row__arrow" href="#reach" aria-label="Right Reach"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M6 4h6v6"/></svg></a></div>
+      <div class="row"><span class="row__tag">( Right Execution )</span><span class="row__text">Every store audited every week, 2 minutes per store</span><a class="row__arrow" href="#execution" aria-label="Right Execution"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M6 4h6v6"/></svg></a></div>
     </div>
   </section>
 
@@ -84,7 +63,7 @@
   <section class="section" id="gap">
     <div class="wrap split">
       <div class="split__copy">
-        <p class="kicker">The execution gap</p>
+        <p class="tag"><i></i>The execution gap</p>
         <h2>Strategy is rarely the problem. The shelf is where it leaks.</h2>
         <p class="body">Brand owners already hold POS data, syndicated reports, supplier decks and category reviews. Strategy and execution live in different silos, so insight rarely becomes a price tag, a planogram or a store action. OSA, share and margin are confirmed in-store, not in the slide deck.</p>
         <ul class="leaks">
@@ -108,11 +87,11 @@
   </section>
 
   <!-- SIX QUESTIONS -->
-  <section class="section section--dark2" id="questions">
+  <section class="section section--light section--cards" id="questions">
     <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">Six questions</p>
-        <h2>If you find a gap in any of these, Kiyan is here to help.</h2>
+      <div class="section-head section-head--center">
+        <p class="tag"><i></i>Six questions</p>
+        <p class="statement statement--center"><strong>If you find a gap in any of these six questions,</strong> Kiyan is here to help you close it.</p>
       </div>
       <ol class="questions">
         <li class="q q--green"><span class="q__n">01</span><h3>Right reach?</h3><p>Are you present in the right store universe and segments, where shoppers buy?</p></li>
@@ -129,7 +108,7 @@
   <section class="section section--light" id="pillars">
     <div class="wrap">
       <div class="section-head">
-        <p class="kicker">The six pillars</p>
+        <p class="tag"><i></i>The six pillars</p>
         <h2>From the right stores to the right shelf, in order.</h2>
         <p class="body">Each pillar answers one of the six questions and hands its output to the next. An engagement can start at any pillar.</p>
       </div>
@@ -272,7 +251,7 @@
   <section class="section" id="how">
     <div class="wrap">
       <div class="section-head section-head--center">
-        <p class="kicker">How we work</p>
+        <p class="tag"><i></i>How we work</p>
         <h2>One table. Three roles.</h2>
         <p class="body">Manufacturer and retailer bring different strengths. Kiyan, as the independent partner, structures the project and manages it end to end.</p>
       </div>
@@ -289,7 +268,7 @@
   <section class="section section--poc" id="poc">
     <div class="wrap">
       <div class="section-head">
-        <p class="kicker kicker--dark">Next step</p>
+        <p class="tag"><i></i>Next step</p>
         <h2>Let's build a proof of concept.<br>One store, one category, one week.</h2>
         <p class="body">No cost, no commitment. You see your shelf redesigned, with the justification, before deciding anything else.</p>
       </div>
@@ -302,7 +281,7 @@
         <figure class="poc__photo"><img src="assets/img/planogram-store.jpg" alt="A Kiyan planogram held against the live shelf in a pilot store" width="1100" height="1374" loading="lazy"></figure>
         <div class="poc__cta">
           <p class="poc__line">Confirm your pilot store and category, and we start this week.</p>
-          <a class="btn btn--dark btn--lg" href="#contact">Confirm your pilot store<svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></a>
+          <a class="btn btn--primary btn--lg" href="#contact"><span class="btn__disc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg></span>Confirm your pilot store</a>
         </div>
       </div>
     </div>
@@ -312,7 +291,7 @@
   <section class="section section--light" id="team">
     <div class="wrap">
       <div class="section-head">
-        <p class="kicker">The people behind Kiyan</p>
+        <p class="tag"><i></i>The people behind Kiyan</p>
         <h2>Six partners. One shelf-first team.</h2>
       </div>
       <div class="people">
@@ -372,7 +351,7 @@
   <section class="section section--contact" id="contact">
     <div class="wrap cta">
       <div class="cta__copy">
-        <p class="kicker">Ready when you are</p>
+        <p class="tag"><i></i>Ready when you are</p>
         <h2>Confirm your pilot store and category, and we start this week.</h2>
         <ul class="contacts">
           <li><strong>Email</strong><a href="mailto:info@kiyan.sa">info@kiyan.sa</a></li>
@@ -391,7 +370,7 @@
         </div>
         <label><span>Work email</span><input type="email" name="email" autocomplete="email" required></label>
         <label><span>Pilot store and category</span><textarea name="brief" rows="4" placeholder="e.g. one hypermarket in Riyadh, the snacks category" required></textarea></label>
-        <button class="btn btn--primary btn--lg btn--block" type="submit">Start a free POC<svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></button>
+        <button class="btn btn--primary btn--lg btn--block" type="submit"><span class="btn__disc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg></span>Start a free POC</button>
         <p class="form__note">Opens in your email app, addressed to info@kiyan.sa.</p>
       </form>
     </div>

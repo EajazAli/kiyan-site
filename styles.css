@@ -501,8 +501,9 @@ main { padding-top: 0; }
 .how__step { font-weight: 600; font-size: 1rem; }
 .how__glyph { display: grid; place-items: center; }
 .how__glyph svg { width: 150px; height: 150px; fill: #d9d9d9; stroke: #d9d9d9; stroke-width: 0; transition: fill .3s, stroke .3s, transform .5s var(--ease); }
-.how__glyph svg path { fill: none; stroke: #d9d9d9; }
-.how__card:hover .how__glyph svg { fill: var(--acid); transform: scale(1.06) rotate(-4deg); } .how__card:hover .how__glyph svg path { stroke: var(--acid); }
+.how__glyph svg path, .how__glyph svg rect { fill: #d9d9d9; }
+.how__glyph svg [fill="#0b0d0b"] { fill: #0b0d0b; }
+.how__card:hover .how__glyph svg { transform: scale(1.06) rotate(-4deg); } .how__card:hover .how__glyph svg path:not([fill]), .how__card:hover .how__glyph svg rect:not([fill]) { fill: var(--acid); }
 .how__panel { padding: 24px; border-radius: 18px; border: 1px solid var(--line-light); background: #fff; display: grid; gap: 8px; }
 .how__panel h3 { font-size: 1.5rem; letter-spacing: -0.03em; }
 .how__panel p { color: #5b5e66; font-size: 1rem; line-height: 1.5; }
@@ -547,3 +548,14 @@ main { padding-top: 0; }
 .x__media .storemap__zone { background: #242925; border-color: #3a3f3b; color: #b8bcc6; } .x__media .storemap__zone--hot { background: rgba(158,240,26,.15); border-color: var(--acid); color: var(--acid); } .x__media .storemap__zone--dead { background: #1d211e; } .x__media .storemap__path { stroke: var(--acid); } .x__media .storemap__pin { color: var(--acid); }
 @media (max-width: 1023px) { .pillars__head { grid-template-columns: 1fr; } .x__head { padding: 26px 24px; grid-template-columns: 48px 1fr auto; gap: 14px; } .x__arrow { width: 44px; height: 44px; } .x__inner { grid-template-columns: 1fr; padding: 0 24px; } .x.is-open .x__inner { padding: 0 24px 28px; } .x__stats--row { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .x__body, .x__inner { transition: none; } }
+
+/* how: lists inside the panels, Kiyan card highlighted */
+.how__head > div { display: grid; gap: 12px; max-width: 46rem; } .how__head .tag { margin: 0; } .how__head .body { margin: 0; }
+.how__panel ul { display: grid; gap: 8px; margin: 4px 0 0; padding: 0; }
+.how__panel li { position: relative; padding-left: 18px; color: #42454c; font-size: .98rem; }
+.how__panel li::before { content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; background: var(--green-dark); }
+.how__card--kiyan { background: #0b0d0b; color: #fff; border-color: #0b0d0b; }
+.how__card--kiyan .how__panel { background: #151916; border-color: rgba(255,255,255,.1); } .how__card--kiyan .how__panel h3 { color: #fff; } .how__card--kiyan .how__panel li { color: #c3c6cd; } .how__card--kiyan .how__panel li::before { background: var(--acid); }
+.how__glyph img { width: 130px; height: auto; opacity: .95; transition: transform .5s var(--ease); } .how__card:hover .how__glyph img { transform: scale(1.06) rotate(-4deg); }
+.how__card { min-height: 0; }
+.objective--light { color: #5b5e66; } .objective--light span { color: var(--ink); }

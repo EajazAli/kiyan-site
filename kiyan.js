@@ -148,3 +148,26 @@
   (function settle() { ladderFrame(); requestAnimationFrame(settle); })();
   onScroll(); spy(); progress();
 })();
+
+/* pillars: expanding rows, one open at a time; first one opens on load */
+(function () {
+  var rows = Array.prototype.slice.call(document.querySelectorAll('.x'));
+  if (!rows.length) return;
+  function set(row, open) {
+    var head = row.querySelector('.x__head'), body = row.querySelector('.x__body');
+    row.classList.toggle('is-open', open);
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) body.removeAttribute('hidden'); else body.setAttribute('hidden', '');
+  }
+  rows.forEach(function (row) {
+    row.querySelector('.x__head').addEventListener('click', function () {
+      var open = !row.classList.contains('is-open');
+      rows.forEach(function (r) { if (r !== row) set(r, false); });
+      set(row, open);
+    });
+  });
+  set(rows[0], true);
+  // a nav or footer link to a pillar opens it
+  function openHash() { var t = location.hash && document.querySelector(location.hash); if (t && t.classList.contains('x')) { rows.forEach(function (r) { set(r, r === t); }); } }
+  window.addEventListener('hashchange', openHash); openHash();
+})();

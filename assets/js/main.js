@@ -122,7 +122,24 @@
   /* ---------- accessible tabs (spaces, roles, solutions) ---------- */
   $$('[data-tabs]').forEach(function (list) {
     var tabs = $$('[role="tab"]', list);
+    function panelOf(t) { return document.getElementById(t.getAttribute('aria-controls')); }
+    // the artwork shares one dot lattice, so cross-fading old over new reads as the dots regrouping
+    function animate(from, to) {
+      if (reduce || !from || !to || from === to) return;
+      var art = $('.space-art', to), old = $('.space-art img:not(.art-ghost)', from);
+      $$('.art-ghost').forEach(function (g) { g.remove(); });
+      if (art && old) {
+        var ghost = old.cloneNode(true);
+        ghost.classList.add('art-ghost'); ghost.removeAttribute('loading');
+        art.appendChild(ghost);
+        setTimeout(function () { ghost.remove(); }, 900);
+      }
+      to.classList.remove('is-entering'); void to.offsetWidth; to.classList.add('is-entering');
+      clearTimeout(to._enter); to._enter = setTimeout(function () { to.classList.remove('is-entering'); }, 1100);
+    }
     function select(tab, focus) {
+      var prev = tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0];
+      if (prev && prev !== tab) animate(panelOf(prev), panelOf(tab));
       tabs.forEach(function (t) {
         var on = t === tab;
         t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;

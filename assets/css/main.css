@@ -828,3 +828,13 @@ html.is-entering .pt-sheet,.pt.is-covered .pt-sheet{transform:none}
 /* ---------- proof photograph ---------- */
 .proof-shot{margin:0 0 clamp(20px,2.4vw,32px);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.14);aspect-ratio:16/9.5;background:#100F0F}
 .proof-shot img{inline-size:100%;block-size:100%;object-fit:cover;object-position:50% 45%;filter:saturate(.72) contrast(1.06)}
+
+/* ---------- pillar tabs: artwork cross-fades, copy rises in ---------- */
+.space-panel.is-entering .space-art > img:not(.art-ghost){animation:art-in .8s var(--ease) both}
+.space-art .art-ghost{position:absolute;inset:0;z-index:1;pointer-events:none;animation:art-out .8s var(--ease) both}
+.space-panel.is-entering .space-body > *{animation:body-in .55s var(--ease) both}
+.space-panel.is-entering .space-body > :nth-child(1){animation-delay:.1s}.space-panel.is-entering .space-body > :nth-child(2){animation-delay:.17s}.space-panel.is-entering .space-body > :nth-child(3){animation-delay:.24s}.space-panel.is-entering .space-body > :nth-child(4){animation-delay:.31s}.space-panel.is-entering .space-body > :nth-child(5){animation-delay:.38s}
+@keyframes art-in{from{opacity:0;transform:scale(1.07)}to{opacity:1;transform:none}}
+@keyframes art-out{from{opacity:1;transform:none}to{opacity:0;transform:scale(.95)}}
+@keyframes body-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.space-panel.is-entering .space-art > img,.space-panel.is-entering .space-body > *{animation:none}.art-ghost{display:none}}

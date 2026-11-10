@@ -22,6 +22,12 @@
     spacesBtn.addEventListener('click', function (e) { e.stopPropagation(); setMega(!mega.classList.contains('open')); });
     document.addEventListener('click', function (e) { if (!mega.contains(e.target)) setMega(false); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setMega(false); setMenu(false); } });
+    // desktop: open on hover, as on large corporate sites; click still works everywhere
+    var hoverT, fine = matchMedia('(hover: hover) and (min-width: 961px)');
+    [spacesBtn, mega].forEach(function (el) {
+      el.addEventListener('mouseenter', function () { if (fine.matches) { clearTimeout(hoverT); setMega(true); } });
+      el.addEventListener('mouseleave', function () { if (fine.matches) hoverT = setTimeout(function () { setMega(false); }, 180); });
+    });
   }
   function setMenu(open) {
     if (!nav) return;
@@ -69,7 +75,7 @@
     b.addEventListener('click', function () {
       filters.forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
       var f = b.dataset.filter;
-      $$('.person[data-focus]').forEach(function (p) { p.hidden = !(f === '*' || p.dataset.focus.split('|').indexOf(f) > -1); });
+      $$('.profile[data-focus]').forEach(function (p) { p.hidden = !(f === '*' || p.dataset.focus.split('|').indexOf(f) > -1); });
     });
   });
   function openBio(id, push) {
@@ -84,6 +90,28 @@
     d.addEventListener('close', function () { history.replaceState(null, '', location.pathname + location.search); });
   });
   if ($('dialog.bio') && location.hash.length > 1) openBio(location.hash.slice(1));
+  var tgt = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+  if (tgt && tgt.classList.contains('profile')) tgt.classList.add('is-target');
+
+  /* ---------- carousel ---------- */
+  $$('[data-carousel]').forEach(function (car) {
+    var track = $('.car-track', car), cards = $$('.profile', track), bar = $('.car-progress i', car), count = $('.car-count', car), btns = $$('.car-btn', car);
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var sync = function () {
+      var max = track.scrollWidth - track.clientWidth, x = Math.abs(track.scrollLeft), p = max > 0 ? x / max : 1;
+      var step = cards.length > 1 ? Math.abs(cards[1].offsetLeft - cards[0].offsetLeft) : 1;
+      var vis = Math.max(1, Math.round(track.clientWidth / step)), last = Math.min(cards.length, Math.round(x / step) + vis);
+      bar.style.inlineSize = Math.max(8, Math.min(100, (vis / cards.length + p * (1 - vis / cards.length)) * 100)) + '%';
+      count.textContent = pad(last) + ' / ' + pad(cards.length);
+      btns[0].disabled = x < 4; btns[1].disabled = x > max - 4;
+    };
+    btns.forEach(function (b) { b.addEventListener('click', function () {
+      var step = cards.length > 1 ? Math.abs(cards[1].offsetLeft - cards[0].offsetLeft) : track.clientWidth;
+      track.scrollBy({ left: step * (+b.dataset.dir) * (RTL ? -1 : 1), behavior: reduce ? 'auto' : 'smooth' });
+    }); });
+    track.addEventListener('scroll', function () { requestAnimationFrame(sync); }, { passive: true });
+    window.addEventListener('resize', sync); sync();
+  });
 
   /* ---------- demand diagnostic ---------- */
   var diag = $('#diag');

@@ -28,7 +28,9 @@ search index. Do not edit the `.html` files by hand; the next build overwrites t
 
 ## What is in the box
 - English at `/`, Arabic (right-to-left) at `/ar/`, linked by a language switch and `hreflang` tags
-- 6 pages per language + 404: Home, Pillars, How we work, Team, FAQ, Contact
+- 7 pages per language + 404: Home, Pillars, How we work, Team, FAQ, Contact, Legal
+- Dark theme by default (visitors can switch to light; the choice is remembered)
+- Team shown as a carousel on the home page and as full profile cards on the Team page, credentials always visible
 - The six pillars: Right Reach, Right Category, Right Range, Right Store, Right Space, Right Execution
 - SEO: unique titles and descriptions, canonical URLs, Open Graph image, bilingual `sitemap.xml`, `robots.txt`
 - AEO / GEO: JSON-LD (Organization, ProfessionalService, Service, FAQPage, BreadcrumbList, Person),
@@ -37,6 +39,8 @@ search index. Do not edit the `.html` files by hand; the next build overwrites t
 - Self-hosted fonts (Poppins, Inter, IBM Plex Mono, Noto Kufi Arabic; all SIL Open Font License). No third-party requests.
 
 ## Before launch
+- Have counsel review the Terms, Privacy, Security and Cookie text (`LEGAL` in `content.py` / `content_ar.py`).
+- Confirm usage rights for the three photographs in `assets/img/photo/` (taken from the brand guide and the deck).
 - Have a native Arabic speaker at Kiyan review `content_ar.py` and the Arabic names in `data/team.json`.
 - Contact form opens the visitor's email or WhatsApp. Connect a form backend (e.g. Zoho Forms) to capture leads in a CRM.
 - Add Google Analytics / Search Console tags, a Google Business Profile, and a street address for the map.

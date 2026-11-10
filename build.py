@@ -156,7 +156,7 @@ def faq_ld(items):
 def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False).replace("</", "<\\/") + "</script>"
 
-THEME_JS = "(function(){try{var t=localStorage.getItem('kiyan-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)}catch(e){}document.documentElement.classList.remove('no-js')})()"
+THEME_JS = "(function(){try{var t=localStorage.getItem('kiyan-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}document.documentElement.classList.remove('no-js')})()"
 
 # ------------------------------------------------------------ page shell
 def other_page(current):
@@ -178,8 +178,9 @@ def header(current):
       <button class="nav-link" id="pillars-btn" aria-expanded="false" aria-controls="mega">{t("nav_pillars")} {I["chev"]}</button>
       <div class="mega" id="mega">
         <div class="wrap">
-          <div class="mega-intro"><h3>{t("mega_h")}</h3><p>{t("mega_p")}</p><p style="margin-top:14px"><a class="arrow-link" href="pillars.html">{t("mega_all")} {I["arrow"]}</a></p></div>
-          <div class="mega-grid">{mega}</div>
+          <div class="mega-col"><p class="mini-label">{t("mega_h")}</p><div class="mega-grid">{mega}</div><p style="margin-top:18px"><a class="arrow-link" href="pillars.html">{t("mega_all")} {I["arrow"]}</a></p></div>
+          <div class="mega-col mega-links"><p class="mini-label">{t("mega_more_h")}</p><a href="index.html#execution-gap">{t("foot_gap")}</a><a href="how-we-work.html">{t("nav_how")}</a><a href="team.html">{t("nav_team")}</a><a href="faq.html">{t("nav_faq")}</a><a href="how-we-work.html#careers">{t("careers_eyebrow")}</a><a href="contact.html">{t("nav_contact")}</a></div>
+          <a class="mega-feature" href="contact.html?topic=poc"><img src="{A}assets/img/photo/shelf-wide.webp" alt="" width="720" height="480" loading="lazy"><span class="hcard-tag">{t("mega_feat_tag")}</span><span class="mega-feature-body"><strong>{t("mega_feat_h")}</strong><span>{t("mega_feat_p")}</span><span class="btn btn--primary">{t("cta_poc")} {I["arrow"]}</span></span></a>
         </div>
       </div>
       {links}
@@ -222,7 +223,8 @@ def footer(current):
       <div><h4>{t("foot_kiyan")}</h4><ul><li><a href="index.html#execution-gap">{t("foot_gap")}</a></li><li><a href="how-we-work.html">{t("nav_how")}</a></li><li><a href="team.html">{t("nav_team")}</a></li><li><a href="how-we-work.html#poc">{t("foot_poc")}</a></li><li><a href="faq.html">{t("nav_faq")}</a></li><li><a href="how-we-work.html#careers">{t("careers_eyebrow")}</a></li></ul></div>
       <div><h4>{t("foot_contact")}</h4><ul><li><a href="mailto:{S["email"]}">{S["email"]}</a></li><li><a href="https://wa.me/{S["whatsapp"]}" rel="noopener">{t("whatsapp")} <bdi dir="ltr">{S["whatsapp_display"]}</bdi></a></li><li><a href="{S["linkedin"]}" rel="noopener">{t("linkedin")}</a></li><li><a href="contact.html">{t("nav_contact")}</a></li><li><a href="{other}" lang="{ol}" hreflang="{ol}">{t("lang_switch")}</a></li></ul></div>
     </div>
-    <div class="foot-bottom"><span>© {datetime.date.today().year} Kiyan. {t("rights")}</span><span>{t("hq")} · <a href="{A}sitemap.xml">{t("sitemap")}</a></span></div>
+    <div class="foot-bottom"><span>© {datetime.date.today().year} Kiyan. {t("rights")} · {t("hq")}</span>
+      <nav class="foot-legal" aria-label="{t("lg_crumb")}"><a class="foot-lang" href="{other}" lang="{ol}" hreflang="{ol}" aria-label="{e(t("lang_switch_label"))}">{I["globe"]}<span lang="{C.LANG}">{t("lang_current")}</span>{I["chev"]}</a><a href="legal.html#terms">{t("lg_terms")}</a><a href="legal.html#privacy">{t("lg_privacy")}</a><a href="legal.html#security">{t("lg_security")}</a><a href="legal.html#cookies">{t("lg_cookies")}</a><a href="{A}sitemap.xml">{t("sitemap")}</a></nav></div>
   </div>
 </footer>
 <a class="wa" href="https://wa.me/{S["whatsapp"]}" rel="noopener" aria-label="{t("wa_label")}">{I["wa"]}</a>
@@ -243,7 +245,7 @@ def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=Tru
     else: fonts = '<link rel="preload" href="assets/fonts/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>'
     robots = "index, follow, max-snippet:-1, max-image-preview:large" if listed else "noindex"
     out = f'''<!doctype html>
-<html lang="{C.LANG}" dir="{C.DIR}" class="no-js">
+<html lang="{C.LANG}" dir="{C.DIR}" class="no-js" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -300,10 +302,22 @@ def portrait(p):
         return f'<div class="portrait"><img src="{A}assets/img/team/{p["photo"]}" alt="{e(alt)}" width="480" height="480" loading="lazy"></div>'
     return f'<div class="portrait portrait--mono" role="img" aria-label="{e(p["name"])}">{initials(p["latin_name"])}</div>'
 
-def person_card(p, link=False):
-    inner = f'{portrait(p)}<div><div class="name">{e(p["name"])} {I["arrow"]}</div><div class="role">{e(p["role"])}</div></div>'
-    if link: return f'<a class="person reveal" href="team.html#{p["id"]}">{inner}</a>'
-    return f'<button class="person reveal" data-bio="{p["id"]}" data-focus="{e("|".join(p["focus"]))}" aria-haspopup="dialog">{inner}</button>'
+def profile_card(p, focus=False):
+    cred = ""
+    if p["career"]:
+        cred = f'<p class="mini-label">{t("prev_at")}</p><ul class="cred">' + "".join(f'<li><b dir="auto">{e(b)}</b><span>{e(a)}</span></li>' for a, b in p["career"]) + "</ul>"
+    mail = f'<a class="profile-mail" href="mailto:{p["email"]}" dir="ltr">{I["mail"]}{p["email"]}</a>' if p.get("email") else ""
+    chips = "".join(f'<span class="chip">{e(f)}</span>' for f in p["focus_labels"])
+    attrs = f' id="{p["id"]}" data-focus="{e("|".join(p["focus"]))}"' if focus else ""
+    return f'''<article class="profile"{attrs}>
+    <div class="profile-photo">{portrait(p)}<div class="profile-chips">{chips}</div></div>
+    <div class="profile-body"><h3>{e(p["name"])}</h3><p class="role">{e(p["role"])}</p><p class="summary">{e(p["summary"])}</p>{cred}{mail}</div></article>'''
+
+def carousel(cards):
+    return f'''<div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="{t("car_label")}">
+    <div class="car-track" tabindex="0">{cards}</div>
+    <div class="car-ui"><div class="car-progress"><i></i></div><span class="car-count" dir="ltr" aria-hidden="true"></span>
+    <button class="icon-btn car-btn" data-dir="-1" aria-label="{t("car_prev")}">{I["arrow"]}</button><button class="icon-btn car-btn" data-dir="1" aria-label="{t("car_next")}">{I["arrow"]}</button></div></div>'''
 
 def faq_block(items):
     return '<div class="faq">' + "".join(f'<details><summary>{e(q)}</summary><div class="a"><p>{e(a)}</p></div></details>' for q, a in items) + "</div>"
@@ -320,10 +334,12 @@ def poc_block(pid="poc"):
     <div class="poc-steps">{"".join(f"<div><b>1</b><span>{x}</span></div>" for x in t("poc_units"))}</div></div>'''
 def three_roles():
     T = C.THREE
-    return f'''<div class="three-roles">
-    <div class="card"><span class="n">{t("hw_brings_m")}</span>{ticks(T["m"])}</div>
-    <div class="card mid"><span class="n" style="color:#86BC25">{t("hw_brings_k")}</span>{ticks(T["k"])}</div>
-    <div class="card"><span class="n">{t("hw_brings_r")}</span>{ticks(T["r"])}</div></div>'''
+    def card(key, img, mid=False):
+        return f'''<article class="hcard{" hcard--mid" if mid else ""} reveal">
+      <img src="{A}assets/img/photo/{img}.webp" alt="" width="800" height="1000" loading="lazy">
+      <span class="hcard-tag">{t("role_tag_" + key)}</span>
+      <div class="hcard-body"><h3>{t("role_h_" + key)}</h3>{ticks(T[key])}</div></article>'''
+    return f'<div class="hcards">{card("m", "manufacturer")}{card("k", "partner", True)}{card("r", "retailer")}</div>'
 def qmark(name): return name + ("؟" if is_ar() else "?")
 
 # ================================================================= HOME
@@ -340,7 +356,7 @@ def build_home():
       <div class="space-body"><span class="mono" style="color:#86BC25">{p["n"]} / {e(p["name"])}</span><p class="promise">{e(p["title"])}</p><p>{e(p["lede"])}</p>
       <div class="chips">{"".join(f'<span class="chip">{e(c)}</span>' for c in p["chips"])}</div>
       <a class="arrow-link" href="pillars.html#{p["id"]}">{t("p_explore").format(x=e(p["name"]))} {I["arrow"]}</a></div></article>''' for i, p in enumerate(C.PILLARS))
-    ppl = "".join(person_card(p, link=True) for p in people())
+    ppl = carousel("".join(profile_card(p) for p in people()))
     pstats = "".join(f"<div>{num(a)}<span>{b}</span></div>" for a, b in t("proof_stats"))
     body = f'''
 <section class="hero on-ink" aria-labelledby="hero-h">
@@ -394,7 +410,7 @@ def build_home():
 
 <section class="section" id="people" aria-labelledby="people-h"><div class="wrap">
   <div class="section-head"><div><p class="eyebrow">{t("people_eyebrow")}</p><h2 id="people-h">{t("people_h")}</h2></div><p class="muted">{t("people_p")}</p></div>
-  <div class="people-row">{ppl}</div>
+  {ppl}
   <div class="pedigree reveal"><span class="mono">{t("pedigree")}</span>{"".join(f'<span dir="ltr">{f}</span>' for f in C.FIRMS)}</div>
   <p style="margin-top:32px"><a class="arrow-link" href="team.html">{t("people_link")} {I["arrow"]}</a></p>
 </div></section>
@@ -509,17 +525,8 @@ def build_team():
         if not members: continue
         gl = TEAM.get("groups_ar", {}).get(g, g) if is_ar() else g
         head = f'<h2 style="font-size:clamp(1.5rem,2.4vw,2rem);margin-block:clamp(40px,6vw,72px) 28px">{e(gl)}</h2>' if multi else f'<h2 class="sr-only">{e(gl)}</h2>'
-        groups += head + f'<div class="people-row">{"".join(person_card(p) for p in members)}</div>'
+        groups += head + f'<div class="profile-grid">{"".join(profile_card(p, focus=True) for p in members)}</div>'
     dialogs = ""
-    for p in P:
-        career = f'<h3>{t("tm_career")}</h3><ul class="career">{"".join(f"<li><span>{e(a)}</span><span>{e(b)}</span></li>" for a, b in p["career"])}</ul>' if p["career"] else ""
-        links = ""
-        if p.get("email"): links += f'<a href="mailto:{p["email"]}" dir="ltr">{I["mail"]}{p["email"]}</a>'
-        if p.get("linkedin"): links += f'<a href="{p["linkedin"]}" rel="noopener">{I["in"]}{t("linkedin")}</a>'
-        linkbox = f'<div class="bio-links" style="margin-top:20px">{links}</div>' if links else ""
-        dialogs += f'''<dialog class="bio" id="bio-{p["id"]}" aria-labelledby="bio-h-{p["id"]}"><button class="icon-btn bio-close" data-close aria-label="{t("close")}">{I["close"]}</button>
-<div class="bio-inner"><div class="bio-side">{portrait(p)}<div><div class="chips">{"".join(f'<span class="chip">{e(f)}</span>' for f in p["focus_labels"])}</div>{linkbox}</div></div>
-<div class="bio-main"><h2 id="bio-h-{p["id"]}">{e(p["name"])}</h2><p class="role">{e(p["role"])}</p><p class="summary">{e(p["summary"])}</p>{career}</div></div></dialog>'''
     persons = []
     for p in P:
         d = {"@type": "Person", "name": p["latin_name"], "jobTitle": p["role"], "description": p["summary"], "worksFor": {"@id": BASE + "/#organization"}, "url": url_for(C.LANG, "team.html") + "#" + p["id"]}
@@ -581,6 +588,14 @@ def build_contact():
     page("contact.html", t("t_contact"), t("d_contact"), body, trail=trail, cta=False,
          extra_ld=[{"@context": "https://schema.org", "@type": "ContactPage", "url": url_for(C.LANG, "contact.html"), "name": t("t_contact")}])
 
+def build_legal():
+    trail = [("legal.html", t("lg_crumb"))]
+    nav = "".join(f'<li><a href="#{i}">{e(h)}</a></li>' for i, h, _ in C.LEGAL)
+    secs = "".join(f'<section id="{i}" class="legal-sec"><h2>{e(h)}</h2>' + "".join(f"<p>{e(x)}</p>" for x in ps) + "</section>" for i, h, ps in C.LEGAL)
+    body = page_hero(trail, t("lg_crumb"), t("lg_h"), t("lg_p")) + f'''
+<section class="section section--tight"><div class="wrap"><div class="split"><ul class="legal-nav">{nav}</ul><div class="legal">{secs}</div></div></div></section>'''
+    page("legal.html", t("t_legal"), t("d_legal"), body, trail=trail, cta=False)
+
 def build_404():
     body = f'<section class="page-hero"><div class="wrap" style="min-height:50vh"><p class="eyebrow">404</p><h1>{t("nf_h")}</h1><p class="lede">{t("nf_p")}</p><div class="btn-row"><a class="btn btn--primary" href="index.html">{t("nf_btn")} {I["arrow"]}</a><a class="btn btn--ghost" href="pillars.html">{t("hero_secondary")}</a></div></div></section>'
     page("404.html", t("t_404"), t("nf_p"), body, cta=False, listed=False)
@@ -603,7 +618,7 @@ def build_language(mod):
     global C, A, OUT
     C = mod; A = "../" if mod.LANG == "ar" else ""; OUT = ROOT / "ar" if mod.LANG == "ar" else ROOT
     OUT.mkdir(exist_ok=True)
-    for b in (build_home, build_pillars, build_how, build_team, build_faq, build_contact, build_404): b()
+    for b in (build_home, build_pillars, build_how, build_team, build_faq, build_contact, build_legal, build_404): b()
     build_data()
 
 # ---------------------------------------------------------------- extras

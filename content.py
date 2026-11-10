@@ -235,3 +235,40 @@ FAQ = [
 HOME_FAQ = [0, 2, 3, 8, 11]
 FIRMS = ["Nielsen", "GfK", "MAF Carrefour", "Apple", "Nike", "KPMG", "BAT", "Curiosity"]
 FOCUS_LABELS = {}
+
+UI.update({
+    "role_tag_m": "Manufacturer", "role_tag_k": "Kiyan · independent partner", "role_tag_r": "Retailer",
+    "role_h_m": "Brings the category vision.", "role_h_k": "Structures the work, end to end.", "role_h_r": "Brings the store reality.",
+    "car_prev": "Previous partner", "car_next": "Next partner", "car_label": "Kiyan partners", "prev_at": "Career",
+    "mega_feat_tag": "Free proof of concept", "mega_feat_h": "One store, one category, one week.", "mega_feat_p": "See your shelf redesigned, with the justification, before deciding anything else.",
+    "mega_more_h": "Kiyan",
+    "lg_terms": "Terms of Use", "lg_privacy": "Privacy Policy", "lg_security": "Security", "lg_cookies": "Cookie Preferences",
+    "lg_crumb": "Legal", "lg_h": "Terms, privacy, security and cookies.", "lg_p": "How this website may be used and what it does with your information. Last updated November 2026.",
+    "t_legal": "Terms, privacy, security and cookies | Kiyan", "d_legal": "Kiyan's website terms of use, privacy policy, security statement and cookie preferences.",
+    "lang_current": "English",
+})
+LEGAL = [
+    ("terms", "Terms of Use", [
+        "This website is published by Kiyan, Riyadh, Saudi Arabia, to describe its services. By using it you accept these terms.",
+        "The content is general information, not professional advice. An engagement with Kiyan is governed only by the signed agreement for that engagement.",
+        "The Kiyan name, logo, text, illustrations and photographs on this site belong to Kiyan or its licensors. You may share links and quote short passages with attribution; other reuse needs written permission.",
+        "We work to keep the site accurate and available, but it is provided as it is, without warranty. Links to other websites are provided for convenience and we are not responsible for their content.",
+    ]),
+    ("privacy", "Privacy Policy", [
+        "This website does not ask you to create an account and does not run advertising or third-party tracking scripts.",
+        "The contact form does not store your details on this website. It opens your own email or WhatsApp application with the message filled in, and nothing is sent until you choose to send it.",
+        "When you email or message us, we receive what you send (such as your name, company, email address and message) and use it only to reply and to discuss working together. We do not sell personal information.",
+        "You can ask us to correct or delete the information you have sent by writing to info@kiyan.sa. We handle personal data in line with the Saudi Personal Data Protection Law.",
+    ]),
+    ("security", "Security", [
+        "This website is a static site served over HTTPS. It has no login, no database and no payment processing, which keeps its exposure small.",
+        "Fonts, scripts and images are served from this site itself, so pages do not load code from third parties.",
+        "Client data shared during an engagement is handled under the confidentiality and data terms of that engagement, not through this website.",
+        "To report a security concern, write to info@kiyan.sa.",
+    ]),
+    ("cookies", "Cookie Preferences", [
+        "This website does not set advertising or analytics cookies, so there is nothing to opt in to or out of.",
+        "Your browser stores one preference on your own device: whether you chose the light or dark theme. It is not sent to us and you can clear it at any time from your browser settings.",
+        "If analytics are added in future, this section will be updated and you will be asked for consent first where the law requires it.",
+    ]),
+]

@@ -1,0 +1,77 @@
+# Kiyan
+
+> Kiyan is a Riyadh-based category management and retail execution consultancy. It takes strategy from the boardroom to the shelf through six pillars: Right Reach, Right Category, Right Range, Right Store, Right Space and Right Execution. "Where intelligence meets execution."
+
+## The six pillars
+
+- **Right Reach**: Are you present in the right store universe and segments, where shoppers buy? Know every outlet that matters, then cover the ones that pay. A verified store universe replaces estimated counts and blind spots, so field effort is aimed at the outlets that carry the category.
+- **Right Category**: Are you satisfied with the shopper and purchase frequency? Give every category a role, then plan it jointly. Category roles are built from shopper research, trip triggers, basket and loyalty data, then carried from insight through planning to in-store execution.
+- **Right Range**: Is the 80/20 still working, or is it quietly costing you? A productive assortment that protects shopper needs. It removes duplication, congestion and inventory fragmentation without losing the shopper.
+- **Right Store**: Does one national planogram really fit every store cluster? Cluster, map and size the opportunity store by store. Cluster-specific range, space and service models replace one national planogram.
+- **Right Space**: Is the share of shelf in line with the share of sales and profitability? Balance four needs before recommending space. The Mixed Demand Space model weighs commercial, shopper, operational and strategic needs. Planograms are built for every fixture type, from gondolas, chillers and freezers to check-out, through to a full 3D store layout.
+- **Right Execution**: Is your on-shelf availability where it needs to be? On-shelf availability is decided at the shelf. We close the loop every week. Image recognition gives a consistent, objective baseline instead of manual spot checks. Execution stays with your team; we track whether each task closed.
+
+## One table. Three roles.
+
+Kiyan sits between manufacturer and retailer as the independent category management partner. We structure the project, integrate the data and manage it from assessment to pilot to scale.
+
+## Proof of concept
+
+One store, one category, one week. No cost, no commitment. You see your shelf redesigned, with the justification, before deciding anything else.
+
+## Team
+
+- Ibrahim Al Bakri, Managing Partner. 25+ years across operations, media, research and digital transformation.
+- Saif Abedi, Partner. Partner at Kiyan, based in Riyadh.
+- Khaled Anwar, Demand Space Partner. Shopper insights and retail strategy. 22+ years turning shopper behaviour into category decisions.
+- Ahmed Sabra, RTM Partner. 25+ years across retail census, location intelligence and geo-marketing.
+- Fulya Durmus, Insights Partner. 30+ years in consumer, shopper and customised research projects for retailers and brands.
+- Said David Nafid, Brand & Experience Partner. Global brand, marketing communications and customer experience leader. 20+ years building iconic brands and modern growth ecosystems.
+- Peter Vasilyev, Store Excellence Partner. 25+ years of experience in FMCG, retail and technology companies across Europe and MENA.
+
+## FAQ
+
+### What is Kiyan?
+Kiyan is a category management and retail execution consultancy based in Riyadh, Saudi Arabia. It works with manufacturers and retailers as an independent partner, taking strategy from the boardroom to the shelf through six pillars: Right Reach, Right Category, Right Range, Right Store, Right Space and Right Execution.
+
+### What does “where intelligence meets execution” mean?
+It means the work does not stop at the insight or the strategy. Most companies already hold the data and the plan; the return is lost between the decision and the shelf. Kiyan works across that gap, from census and analysis through to the planogram, the route and the store.
+
+### What are Kiyan’s six pillars?
+Right Reach (retail census, store universe and coverage); Right Category (category roles and joint business planning); Right Range (range architecture and assortment productivity); Right Store (store clustering, segmentation and adjacency); Right Space (space-to-sales analysis and store-specific planograms); and Right Execution (AI shelf audit, on-shelf availability and gap-to-task closure).
+
+### Who does Kiyan work with?
+Manufacturers and retailers who own the shelf, and the leaders responsible for it: commercial, sales, category, trade marketing and insight teams. Kiyan is headquartered in Riyadh and works across Saudi Arabia and the wider region.
+
+### What is the execution gap?
+The execution gap is the value lost between a strategy being written and the result appearing on the shelf. Strategy and execution usually sit in different teams, so insight rarely becomes a price tag, a planogram or a store action. On-shelf availability, share and margin are confirmed in-store, which is why Kiyan measures its work there.
+
+### What is category management, and how does Kiyan approach it?
+Category management is the practice of running a product category as a business unit, so that range, pricing, promotion and shelf space are planned around how shoppers buy. Kiyan acts as an independent category management partner between manufacturer and retailer: it runs the category assessment, integrates the data, facilitates the workshops and manages the project from plan to pilot to scale.
+
+### What is a retail census or store universe?
+A retail census is a physical count and classification of every relevant outlet in a market. Kiyan’s store universe goes further than a directory: each outlet is mapped to GIS coordinates and understood on three layers, which are what surrounds it, the store itself and what happens inside it. The underlying fieldwork spans 5M+ entities across three markets and 230+ cities in Saudi Arabia.
+
+### How does the AI shelf audit work?
+Field teams photograph the shelf, which takes about two minutes per audit. Image recognition then reports on-shelf availability, share of shelf and planogram compliance from the same capture, against a 96–98% audit benchmark and at around 60% lower cost than a manual audit. Each gap becomes a task with a specific SKU, position and resolve window, and the shelf is re-captured to verify closure.
+
+### What is the free proof of concept?
+Kiyan offers a proof of concept at no cost and with no commitment: one store, one category, one week. You share the current planogram or realogram for the pilot store, product images and dimensions, and your category vision. Kiyan returns redesigned planogram scenarios with the justification, and supports implementation and evaluation.
+
+### What is route-to-market optimisation?
+Route-to-market (RTM) optimisation designs sales and delivery routes around store potential rather than distance alone. Kiyan first diagnoses six kinds of leakage (coverage, route, assortment, frequency, capacity and commercial), then rebuilds the model so the right stores get the right route, load, frequency and economics.
+
+### Where is Kiyan based?
+Kiyan is headquartered in Riyadh, Saudi Arabia, with a presence in Istanbul and Cairo.
+
+### How do I start working with Kiyan?
+Confirm a pilot store and category for a free proof of concept, book a discovery call, or send your RFP to info@kiyan.sa.
+
+## Contact
+
+- info@kiyan.sa
+- WhatsApp: +966 54 137 3036
+- https://www.linkedin.com/company/kiyansa
+- https://kiyan.sa/
+- English: https://kiyan.sa/llms.txt
+- العربية: https://kiyan.sa/ar/llms.txt

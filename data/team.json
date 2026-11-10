@@ -1,0 +1,306 @@
+{
+  "_how_to_edit": [
+    "Add a new person by copying one block inside \"people\" and changing the values.",
+    "id: lowercase-with-hyphens, unique. photo: file name inside assets/img/team/ (square, 480px+; the site renders it monochrome). Leave photo empty to show initials.",
+    "group: must match one of the names in \"groups\". Add a new name to \"groups\" (and its Arabic to \"groups_ar\") to create a new section such as \"Consultants\".",
+    "focus: one or more filter names. New names appear as new filters automatically; add their Arabic to FOCUS_LABELS in content_ar.py.",
+    "ar: the Arabic name, role, summary and career titles shown on the Arabic site. If \"ar\" is missing the English text is shown.",
+    "After editing, run:  python3 build.py"
+  ],
+  "groups": [
+    "Partners"
+  ],
+  "people": [
+    {
+      "id": "ibrahim-al-bakri",
+      "name": "Ibrahim Al Bakri",
+      "role": "Managing Partner",
+      "group": "Partners",
+      "focus": [
+        "Leadership"
+      ],
+      "photo": "ibrahim-al-bakri.webp",
+      "summary": "25+ years across operations, media, research and digital transformation.",
+      "career": [
+        [
+          "Managing Director",
+          "Curiosity, MENA"
+        ],
+        [
+          "Managing Director",
+          "GfK MENAPI Region"
+        ],
+        [
+          "Managing Director",
+          "GfK Media ME"
+        ],
+        [
+          "Director, Client Service",
+          "Nielsen"
+        ]
+      ],
+      "email": "ibrahim.albakri@kiyan.sa",
+      "linkedin": "",
+      "ar": {
+        "name": "إبراهيم البكري",
+        "role": "الشريك الإداري",
+        "summary": "أكثر من 25 عامًا في العمليات والإعلام والأبحاث والتحول الرقمي.",
+        "career": [
+          [
+            "المدير العام",
+            "Curiosity، الشرق الأوسط وشمال أفريقيا"
+          ],
+          [
+            "المدير العام",
+            "GfK، منطقة MENAPI"
+          ],
+          [
+            "المدير العام",
+            "GfK Media، الشرق الأوسط"
+          ],
+          [
+            "مدير خدمة العملاء",
+            "Nielsen"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "saif-abedi",
+      "name": "Saif Abedi",
+      "role": "Partner",
+      "group": "Partners",
+      "focus": [
+        "Leadership"
+      ],
+      "photo": "",
+      "summary": "Partner at Kiyan, based in Riyadh.",
+      "career": [],
+      "email": "saif.abedi@kiyan.sa",
+      "linkedin": "",
+      "ar": {
+        "name": "سيف عابدي",
+        "role": "شريك",
+        "summary": "شريك في كيان، ومقره الرياض.",
+        "career": []
+      }
+    },
+    {
+      "id": "khaled-anwar",
+      "name": "Khaled Anwar",
+      "role": "Demand Space Partner",
+      "group": "Partners",
+      "focus": [
+        "Category"
+      ],
+      "photo": "khaled-anwar.webp",
+      "summary": "Shopper insights and retail strategy. 22+ years turning shopper behaviour into category decisions.",
+      "career": [
+        [
+          "Commercial Excellence",
+          "Hatab Foods, Innova Healthcare"
+        ],
+        [
+          "Business Development Manager",
+          "MAF Carrefour"
+        ],
+        [
+          "Senior Research Manager",
+          "Nielsen"
+        ]
+      ],
+      "email": "khaled.anwar@kiyan.sa",
+      "linkedin": "",
+      "ar": {
+        "name": "خالد أنور",
+        "role": "شريك مساحة الطلب",
+        "summary": "رؤى المتسوّق واستراتيجية التجزئة. أكثر من 22 عامًا في تحويل سلوك المتسوّق إلى قرارات في إدارة الفئات.",
+        "career": [
+          [
+            "التميّز التجاري",
+            "Hatab Foods و Innova Healthcare"
+          ],
+          [
+            "مدير تطوير الأعمال",
+            "MAF Carrefour"
+          ],
+          [
+            "مدير أبحاث أول",
+            "Nielsen"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ahmed-sabra",
+      "name": "Ahmed Sabra",
+      "role": "RTM Partner",
+      "group": "Partners",
+      "focus": [
+        "Reach"
+      ],
+      "photo": "ahmed-sabra.webp",
+      "summary": "25+ years across retail census, location intelligence and geo-marketing.",
+      "career": [
+        [
+          "Co-Founder & Chief Commercial Officer",
+          "Adhoc GeoMarketing Research"
+        ]
+      ],
+      "email": "",
+      "linkedin": "",
+      "ar": {
+        "name": "أحمد صبرة",
+        "role": "شريك مسار الوصول إلى السوق",
+        "summary": "أكثر من 25 عامًا في حصر منافذ البيع وذكاء المواقع والتسويق الجغرافي.",
+        "career": [
+          [
+            "الشريك المؤسس والرئيس التنفيذي التجاري",
+            "Adhoc GeoMarketing Research"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "fulya-durmus",
+      "name": "Fulya Durmus",
+      "role": "Insights Partner",
+      "group": "Partners",
+      "focus": [
+        "Insights"
+      ],
+      "photo": "fulya-durmus.webp",
+      "summary": "30+ years in consumer, shopper and customised research projects for retailers and brands.",
+      "career": [
+        [
+          "Founder & CEO",
+          "Curiosity Research"
+        ],
+        [
+          "Managing Director",
+          "GfK, Eastern Europe & Türkiye"
+        ]
+      ],
+      "email": "",
+      "linkedin": "",
+      "ar": {
+        "name": "فوليا دورموش",
+        "role": "شريكة الرؤى والأبحاث",
+        "summary": "أكثر من 30 عامًا في أبحاث المستهلك والمتسوّق والمشاريع البحثية المخصصة لتجار التجزئة والعلامات التجارية.",
+        "career": [
+          [
+            "المؤسِّسة والرئيسة التنفيذية",
+            "Curiosity Research"
+          ],
+          [
+            "المديرة العامة",
+            "GfK، أوروبا الشرقية وتركيا"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "said-david-nafid",
+      "name": "Said David Nafid",
+      "role": "Brand & Experience Partner",
+      "group": "Partners",
+      "focus": [
+        "Brand"
+      ],
+      "photo": "said-david-nafid.webp",
+      "summary": "Global brand, marketing communications and customer experience leader. 20+ years building iconic brands and modern growth ecosystems.",
+      "career": [
+        [
+          "Co-Founder & Executive Director",
+          "Creator of Stories"
+        ],
+        [
+          "Chief Marketing Officer",
+          "MAF Carrefour"
+        ],
+        [
+          "Head of Marketing Communications",
+          "Apple"
+        ],
+        [
+          "Vice President, Brand",
+          "Nike"
+        ]
+      ],
+      "email": "",
+      "linkedin": "",
+      "ar": {
+        "name": "سعيد ديفيد نافد",
+        "role": "شريك العلامة والتجربة",
+        "summary": "قيادي عالمي في العلامات التجارية والاتصال التسويقي وتجربة العملاء. أكثر من 20 عامًا في بناء علامات أيقونية ومنظومات نمو حديثة.",
+        "career": [
+          [
+            "الشريك المؤسس والمدير التنفيذي",
+            "Creator of Stories"
+          ],
+          [
+            "الرئيس التنفيذي للتسويق",
+            "MAF Carrefour"
+          ],
+          [
+            "رئيس الاتصال التسويقي",
+            "Apple"
+          ],
+          [
+            "نائب الرئيس للعلامة التجارية",
+            "Nike"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "peter-vasilyev",
+      "name": "Peter Vasilyev",
+      "role": "Store Excellence Partner",
+      "group": "Partners",
+      "focus": [
+        "Execution"
+      ],
+      "photo": "peter-vasilyev.webp",
+      "summary": "25+ years of experience in FMCG, retail and technology companies across Europe and MENA.",
+      "career": [
+        [
+          "Business Development Director",
+          "Ailet"
+        ],
+        [
+          "Consultant",
+          "KPMG"
+        ],
+        [
+          "Marketing Manager",
+          "BAT"
+        ]
+      ],
+      "email": "",
+      "linkedin": "",
+      "ar": {
+        "name": "بيتر فاسيلييف",
+        "role": "شريك تميّز المتاجر",
+        "summary": "أكثر من 25 عامًا من الخبرة في شركات السلع الاستهلاكية والتجزئة والتقنية في أوروبا والشرق الأوسط وشمال أفريقيا.",
+        "career": [
+          [
+            "مدير تطوير الأعمال",
+            "Ailet"
+          ],
+          [
+            "مستشار",
+            "KPMG"
+          ],
+          [
+            "مدير التسويق",
+            "BAT"
+          ]
+        ]
+      }
+    }
+  ],
+  "groups_ar": {
+    "Partners": "الشركاء"
+  }
+}

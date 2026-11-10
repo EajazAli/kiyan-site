@@ -727,3 +727,40 @@ dialog.search::backdrop{background:rgba(16,15,15,.55);backdrop-filter:blur(4px)}
 .hcard-tag{z-index:2}
 .hcard-body{position:relative;z-index:2;margin-top:-34px;flex:1}
 @media (max-width:980px){.hcard{min-block-size:0}.hcard img{aspect-ratio:4/2.8}.hcard::after{padding-top:70%}}
+
+/* ---------- mega menu v3: header line, rule, icon grid (after studying medallia.com) ---------- */
+.mega .wrap{display:block;padding-block:28px 40px}
+.mega-head{display:flex;flex-direction:column;gap:4px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+.mega-head strong{font:600 1.0625rem/1.3 var(--font-display)}
+.mega-head span{font-size:.875rem;color:var(--muted)}
+.mega-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(24px,4vw,64px);align-items:start}
+.mega-body > .mega-grid:only-child{grid-column:1 / -1}
+.mega-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 20px}
+#mega-company .mega-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.nav a.mega-item{display:grid;grid-template-columns:24px 1fr;gap:14px;align-items:start;padding:12px;margin:0 0 0 -12px;margin-inline:-12px 0;border-radius:12px;background:none;font:inherit;text-align:start}
+.nav a.mega-item:hover{background:var(--bg-soft)}
+.mega-item .mi{inline-size:22px;block-size:22px;color:var(--text);margin-top:1px;transition:color .15s}
+.mega-item:hover .mi{color:var(--green)}
+.mega-item strong{display:block;font:600 .9375rem/1.3 var(--font-text);margin:0}
+.mega-item .d{display:block;font:400 .8125rem/1.45 var(--font-text);color:var(--muted);margin-top:3px}
+.nav a.mega-promo{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:16px;border-radius:16px;background:var(--bg-soft);font:inherit}
+.nav a.mega-promo:hover{background:var(--bg-raise)}
+.mega-promo img{inline-size:100%;aspect-ratio:16/8;object-fit:cover;border-radius:10px;margin-bottom:8px;filter:grayscale(1) contrast(1.08)}
+.mega-promo strong{font:600 .9375rem/1.3 var(--font-text)}
+.mega-promo > span{font:400 .8125rem/1.45 var(--font-text);color:var(--muted)}
+.mega-promo-link{display:inline-flex;gap:6px;align-items:center;color:var(--text) !important;font-weight:600 !important;text-decoration:underline;text-underline-offset:3px;margin-top:4px}
+.mega-promo-link svg{inline-size:13px;block-size:13px}
+@media (max-width:1100px){.mega-body{grid-template-columns:1fr}.mega-promo{display:none !important}.mega-grid,#mega-company .mega-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:960px){
+  .mega .wrap{padding:4px 0 12px}
+  .mega-head{display:none}
+  .mega-grid,#mega-company .mega-grid{grid-template-columns:1fr;gap:0}
+  .nav a.mega-item{margin:0;padding:12px 0;border:0;inline-size:100%;justify-content:start}
+  .nav a.mega-item strong{font:600 1.0625rem/1.3 var(--font-text)}
+  .mega-col > .mini-label,.mega-links{display:initial}
+}
+[lang="ar"] .mega-item strong{font-size:.9375rem}
+[lang="ar"] .mega-item .d,[lang="ar"] .mega-promo > span,[lang="ar"] .mega-head span{font-size:.8125rem}
+.mega-promo img{block-size:auto}
+/* one photographic language: all photography monochrome, colour comes only from the brand */
+.hcard img{filter:grayscale(1) contrast(1.12) brightness(.96)}

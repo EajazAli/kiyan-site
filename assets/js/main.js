@@ -16,19 +16,25 @@
   });
 
   /* ---------- navigation ---------- */
-  var nav = $('#nav'), menuBtn = $('#menu-btn'), mega = $('#mega'), spacesBtn = $('#pillars-btn');
-  function setMega(open) { mega.classList.toggle('open', open); spacesBtn.setAttribute('aria-expanded', open); }
-  if (spacesBtn) {
-    spacesBtn.addEventListener('click', function (e) { e.stopPropagation(); setMega(!mega.classList.contains('open')); });
-    document.addEventListener('click', function (e) { if (!mega.contains(e.target)) setMega(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setMega(false); setMenu(false); } });
-    // desktop: open on hover, as on large corporate sites; click still works everywhere
-    var hoverT, fine = matchMedia('(hover: hover) and (min-width: 961px)');
-    [spacesBtn, mega].forEach(function (el) {
-      el.addEventListener('mouseenter', function () { if (fine.matches) { clearTimeout(hoverT); setMega(true); } });
-      el.addEventListener('mouseleave', function () { if (fine.matches) hoverT = setTimeout(function () { setMega(false); }, 180); });
+  var nav = $('#nav'), menuBtn = $('#menu-btn'), megaBtns = $$('.nav-link[aria-controls]');
+  var fine = matchMedia('(hover: hover) and (min-width: 961px)'), hoverT;
+  function setMega(which) {            // which: a button, or false to close all
+    megaBtns.forEach(function (b) {
+      var on = b === which, panel = document.getElementById(b.getAttribute('aria-controls'));
+      b.setAttribute('aria-expanded', on); panel.classList.toggle('open', on);
     });
   }
+  megaBtns.forEach(function (b) {
+    var panel = document.getElementById(b.getAttribute('aria-controls'));
+    b.addEventListener('click', function (e) { e.stopPropagation(); setMega(b.getAttribute('aria-expanded') === 'true' ? false : b); });
+    // desktop: open on hover, as on large corporate sites; click and keyboard still work everywhere
+    [b, panel].forEach(function (el) {
+      el.addEventListener('mouseenter', function () { if (fine.matches) { clearTimeout(hoverT); setMega(b); } });
+      el.addEventListener('mouseleave', function () { if (fine.matches) hoverT = setTimeout(function () { setMega(false); }, 160); });
+    });
+  });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.mega')) setMega(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setMega(false); setMenu(false); } });
   function setMenu(open) {
     if (!nav) return;
     nav.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', open);

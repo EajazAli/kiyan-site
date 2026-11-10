@@ -272,3 +272,20 @@ LEGAL = [
         "If analytics are added in future, this section will be updated and you will be asked for consent first where the law requires it.",
     ]),
 ]
+
+UI.update({
+    "nav_company": "Company",
+    "mg_p_h": "The six pillars", "mg_p_d": "From the right stores to the right shelf. One connected practice for manufacturers and retailers.",
+    "mg_c_h": "Kiyan", "mg_c_d": "An independent category management and retail execution partner, headquartered in Riyadh.",
+    "mg_items": [("how-we-work.html", "table", "How we work", "One table, three roles, one shared objective"),
+                 ("index.html#execution-gap", "gap", "The execution gap", "Why value leaks between plan and shelf"),
+                 ("team.html", "people", "Team", "The partners who do the work"),
+                 ("how-we-work.html#poc", "flask", "Free proof of concept", "One store, one category, one week"),
+                 ("faq.html", "help", "FAQ", "Plain answers before a first call"),
+                 ("how-we-work.html#careers", "case", "Careers", "Join a small senior team"),
+                 ("contact.html", "mail", "Contact", "Riyadh, Istanbul and Cairo")],
+    "mg_promo_link": "Confirm your pilot store",
+})
+for _p, _d in zip(PILLARS, ["Retail census, store universe and coverage", "Category roles and joint business planning", "Range architecture and assortment productivity",
+                            "Store clustering, segmentation and adjacency", "Space-to-sales analysis and planograms", "AI shelf audit and gap-to-task closure"]):
+    _p["menu"] = _d

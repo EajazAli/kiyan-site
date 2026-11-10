@@ -50,6 +50,24 @@ I = {
  "globe": '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M2.8 10h14.4M10 2.8c2.4 2.2 2.4 12.2 0 14.4M10 2.8c-2.4 2.2-2.4 12.2 0 14.4"/></svg>',
 }
 
+
+def _ic(d): return f'<svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>'
+MI = {
+ "reach": _ic('<path d="M12 21s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0C18.500 15.400 12 21 12 21Z"/><circle cx="12" cy="10.5" r="2.3"/>'),
+ "category": _ic('<rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.2"/>'),
+ "range": _ic('<path d="M4 20V5M9.300 20v-9M14.700 20v-5M20 20v-2.5"/>'),
+ "store": _ic('<path d="M4 10v10h16V10M3 10l1.500-5.500h15L21 10a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0ZM10 20v-5h4v5"/>'),
+ "space": _ic('<rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><path d="M3.500 9.200h17M3.500 14.800h17M8 6v3.200M12 6v3.200M15 11.600v3.200M8 17.400v3.1"/>'),
+ "execution": _ic('<circle cx="12" cy="12" r="8.5"/><path d="m8.200 12.300 2.600 2.600 5-5.4"/>'),
+ "table": _ic('<circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="4.5" r="1.8"/><circle cx="5.5" cy="16" r="1.8"/><circle cx="18.5" cy="16" r="1.8"/>'),
+ "gap": _ic('<path d="M4 5h16M6.500 10h11M9 15h6M11 20h2"/>'),
+ "people": _ic('<circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.500c.500-3.300 3-5 6-5s5.500 1.700 6 5M16 5.600a3.200 3.200 0 0 1 0 5.800M17.500 14.800c1.900.600 3.100 2.200 3.500 4.7"/>'),
+ "flask": _ic('<path d="M9.500 3.500h5M10.500 3.500v5.700L5 18.500a1.400 1.400 0 0 0 1.200 2h11.600a1.400 1.400 0 0 0 1.200-2l-5.500-9.300V3.500M7.800 14.500h8.4"/>'),
+ "help": _ic('<circle cx="12" cy="12" r="8.5"/><path d="M9.700 9.600a2.400 2.400 0 1 1 3.500 2.100c-.800.500-1.200 1-1.200 2M12 16.700v.100"/>'),
+ "case": _ic('<rect x="3.5" y="7.5" width="17" height="12" rx="1.8"/><path d="M9 7.500V5.300h6v2.200M3.500 12.500h17"/>'),
+ "mail": _ic('<rect x="3.5" y="5.5" width="17" height="13" rx="1.8"/><path d="m4 7 8 6 8-6"/>'),
+}
+
 # ------------------------------------------------- generative dot-matrix art
 def art(kind, cols=48, rows=20):
     """Deterministic dot-matrix illustration, one per pillar. Each grid cell is a
@@ -164,9 +182,15 @@ def other_page(current):
 
 def header(current):
     other, ol = other_page(current)
-    mega = "".join(f'<a href="pillars.html#{p["id"]}"><span class="n">{p["n"]}</span><strong>{e(p["name"])}</strong><span class="d">{e(p["q"])}</span></a>' for p in C.PILLARS)
-    nav = [("how-we-work.html", t("nav_how")), ("team.html", t("nav_team")), ("faq.html", t("nav_faq"))]
-    links = "".join(f'<a href="{u}"' + (' aria-current="page"' if u == current else "") + f'>{n}</a>' for u, n in nav)
+    def item(href, icon, title, desc):
+        return f'<a class="mega-item" href="{href}">{MI[icon]}<span><strong>{e(title)}</strong><span class="d">{e(desc)}</span></span></a>'
+    pillars = "".join(item("pillars.html#" + p["id"], p["id"], p["name"], p["menu"]) for p in C.PILLARS)
+    company = "".join(item(*x) for x in t("mg_items"))
+    def panel(pid, head, desc, items, extra=""):
+        return f'''<div class="mega" id="{pid}"><div class="wrap"><div class="mega-head"><strong>{head}</strong><span>{desc}</span></div>
+          <div class="mega-body"><div class="mega-grid">{items}</div>{extra}</div></div></div>'''
+    promo = f'''<a class="mega-promo" href="contact.html?topic=poc"><img src="{A}assets/img/photo/shelf-wide.webp" alt="" width="720" height="480" loading="lazy"><strong>{t("mega_feat_h")}</strong><span>{t("mega_feat_p")}</span><span class="mega-promo-link">{t("mg_promo_link")} {I["arrow"]}</span></a>'''
+    cur = ' aria-current="page"' if current == "team.html" else ""
     return f'''<a class="skip" href="#main">{t("skip")}</a>
 <header class="site-header">
   <div class="wrap">
@@ -175,15 +199,11 @@ def header(current):
       <img class="logo-dark" src="{A}assets/img/kiyan-logo-white.svg" alt="" width="83" height="34">
     </a>
     <nav class="nav" id="nav" aria-label="{t("menu")}">
-      <button class="nav-link" id="pillars-btn" aria-expanded="false" aria-controls="mega">{t("nav_pillars")} {I["chev"]}</button>
-      <div class="mega" id="mega">
-        <div class="wrap">
-          <div class="mega-col"><p class="mini-label">{t("mega_h")}</p><div class="mega-grid">{mega}</div><p style="margin-top:18px"><a class="arrow-link" href="pillars.html">{t("mega_all")} {I["arrow"]}</a></p></div>
-          <div class="mega-col mega-links"><p class="mini-label">{t("mega_more_h")}</p><a href="index.html#execution-gap">{t("foot_gap")}</a><a href="how-we-work.html">{t("nav_how")}</a><a href="team.html">{t("nav_team")}</a><a href="faq.html">{t("nav_faq")}</a><a href="how-we-work.html#careers">{t("careers_eyebrow")}</a><a href="contact.html">{t("nav_contact")}</a></div>
-          <a class="mega-feature" href="contact.html?topic=poc"><img src="{A}assets/img/photo/shelf-wide.webp" alt="" width="720" height="480" loading="lazy"><span class="hcard-tag">{t("mega_feat_tag")}</span><span class="mega-feature-body"><strong>{t("mega_feat_h")}</strong><span>{t("mega_feat_p")}</span><span class="btn btn--primary">{t("cta_poc")} {I["arrow"]}</span></span></a>
-        </div>
-      </div>
-      {links}
+      <button class="nav-link" aria-expanded="false" aria-controls="mega-pillars">{t("nav_pillars")} {I["chev"]}</button>
+      {panel("mega-pillars", t("mg_p_h"), t("mg_p_d"), pillars, promo)}
+      <button class="nav-link" aria-expanded="false" aria-controls="mega-company">{t("nav_company")} {I["chev"]}</button>
+      {panel("mega-company", t("mg_c_h"), t("mg_c_d"), company)}
+      <a href="team.html"{cur}>{t("nav_team")}</a>
       <a class="nav-mobile-only" href="{other}" lang="{ol}" hreflang="{ol}">{t("lang_switch")}</a>
       <a class="btn btn--primary nav-mobile-only" href="contact.html?topic=poc">{t("cta_poc")} {I["arrow"]}</a>
     </nav>

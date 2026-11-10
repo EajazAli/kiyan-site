@@ -29,6 +29,7 @@ search index. Do not edit the `.html` files by hand; the next build overwrites t
 ## What is in the box
 - English at `/`, Arabic (right-to-left) at `/ar/`, linked by a language switch and `hreflang` tags
 - 7 pages per language + 404: Home, Pillars, How we work, Team, FAQ, Contact, Legal
+- First-visit loader and page-to-page sheet transitions (skipped for visitors who prefer reduced motion)
 - Dark theme by default (visitors can switch to light; the choice is remembered)
 - Team shown as a carousel on the home page and as full profile cards on the Team page, credentials always visible
 - The six pillars: Right Reach, Right Category, Right Range, Right Store, Right Space, Right Execution

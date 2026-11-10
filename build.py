@@ -174,7 +174,7 @@ def faq_ld(items):
 def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False).replace("</", "<\\/") + "</script>"
 
-THEME_JS = "(function(){try{var t=localStorage.getItem('kiyan-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}document.documentElement.classList.remove('no-js')})()"
+THEME_JS = "(function(d,w){var r=d.documentElement;try{var t=localStorage.getItem('kiyan-theme');if(t==='light'||t==='dark')r.setAttribute('data-theme',t)}catch(e){}r.classList.remove('no-js');if(w.matchMedia&&w.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var s=false;try{s=!!sessionStorage.getItem('kiyan-seen')}catch(e){}r.classList.add(s?'is-entering':'is-preloading');w.__kiyanBail=setTimeout(function(){r.classList.remove('is-entering','is-preloading')},7000)})(document,window)"
 
 # ------------------------------------------------------------ page shell
 def other_page(current):
@@ -292,7 +292,16 @@ def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=Tru
 <link rel="stylesheet" href="{A}assets/css/main.css">
 {"".join(ld(x) for x in lds)}
 </head>
-<body>
+<body data-page="{e(t("pg_names").get(fname, ""))}">
+<div class="preloader" aria-hidden="true">
+  <div class="pl-sheet pl-sheet--b"></div><div class="pl-sheet pl-sheet--g"></div><div class="pl-sheet pl-sheet--w"></div>
+  <div class="pl-inner">
+    <div class="pl-top"><img src="{A}assets/img/kiyan-logo-white.svg" alt="" width="83" height="34"><span>{t("pl_top")}</span></div>
+    <div class="pl-mid"><div class="pl-word">{"".join(f"<span><i>{w}</i></span>" for w in t("pl_words"))}</div></div>
+    <div class="pl-bottom"><div><span class="pl-label">{t("pl_bars")}</span><div class="pl-bars"><span></span><span></span><span></span><span></span><span></span><span></span></div></div><div class="pl-count" dir="ltr">000</div></div>
+  </div>
+</div>
+<div class="pt" aria-hidden="true"><div class="pt-sheet pt-sheet--b"></div><div class="pt-sheet pt-sheet--g"></div><div class="pt-sheet pt-sheet--w"></div><div class="pt-sheet pt-sheet--k"><div class="pt-label"><span></span></div></div></div>
 {header(fname)}
 <main id="main">
 {body}
@@ -631,7 +640,7 @@ def build_data():
     idx += [{"k": t("k_person"), "t": p["name"], "d": p["role"] + ". " + p["summary"], "u": "team.html#" + p["id"], "x": p["latin_name"]} for p in people()]
     idx += [{"k": t("k_question"), "t": q, "d": a[:150] + "…", "u": "faq.html"} for q, a in C.FAQ]
     keys = ["q_tap", "q_marked", "q_none_h", "q_none_p", "q_one", "q_many", "q_start", "q_poc", "q_prefill", "s_empty", "m_enquiry", "m_pillar", "m_new", "ct_name", "ct_role", "ct_company", "ct_email"]
-    T = {k: t(k) for k in keys}; T["sep"] = "، " if is_ar() else ", "; T["sep2"] = "؛ " if is_ar() else "; "
+    T = {k: t(k) for k in keys}; T["pages"] = t("pg_names"); T["sep"] = "، " if is_ar() else ", "; T["sep2"] = "؛ " if is_ar() else "; "
     (ROOT / f"assets/js/data-{C.LANG}.js").write_text("window.KIYAN_INDEX=" + json.dumps(idx, ensure_ascii=False) + ";window.KIYAN_T=" + json.dumps(T, ensure_ascii=False) + ";", encoding="utf-8")
 
 def build_language(mod):

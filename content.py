@@ -289,3 +289,8 @@ UI.update({
 for _p, _d in zip(PILLARS, ["Retail census, store universe and coverage", "Category roles and joint business planning", "Range architecture and assortment productivity",
                             "Store clustering, segmentation and adjacency", "Space-to-sales analysis and planograms", "AI shelf audit and gap-to-task closure"]):
     _p["menu"] = _d
+
+UI.update({
+    "pl_top": "Category management & retail execution", "pl_words": ["Where", "intelligence", "meets", "<em>execution.</em>"], "pl_bars": "Six pillars",
+    "pg_names": {"index.html": "Home", "pillars.html": "Pillars", "how-we-work.html": "How we work", "team.html": "Team", "faq.html": "FAQ", "contact.html": "Contact", "legal.html": "Legal", "404.html": "Kiyan"},
+})

@@ -7,6 +7,61 @@
   var T = window.KIYAN_T || {}, RTL = document.documentElement.dir === 'rtl';
   var fmt = function (s, o) { return String(s || '').replace(/\{(\w+)\}/g, function (m, k) { return o[k]; }); };
 
+  /* ---------- first-visit loader and page-to-page transition ----------
+     First page of a session: sheets in the brand colours cover the screen while the
+     tagline rises and six pillar bars fill, then the sheets peel away upward.
+     Every later page: sheets sweep up carrying the destination's name, and peel off on arrival. */
+  var root = document.documentElement, pre = $('.preloader'), pt = $('.pt');
+  var clearBoot = function () { clearTimeout(window.__kiyanBail); root.classList.remove('is-preloading', 'is-entering'); };
+  var ptLabel = pt && $('.pt-label span', pt);
+  if (reduce || !pre || !pt) clearBoot();
+  else if (root.classList.contains('is-preloading')) {
+    clearTimeout(window.__kiyanBail);
+    var count = $('.pl-count', pre), bars = $$('.pl-bars span', pre), t0 = null, DUR = 2000;
+    window.scrollTo(0, 0);
+    requestAnimationFrame(function () { pre.classList.add('is-in'); });
+    var tick = function (now) {
+      if (t0 === null) t0 = now + 200;
+      var x = Math.max(0, Math.min(1, (now - t0) / DUR)), v = (x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2) * 100;
+      count.textContent = ('00' + Math.round(v)).slice(-3);
+      bars.forEach(function (b, i) { b.style.setProperty('--p', Math.max(0, Math.min(1, (v - i * 9) / (100 - i * 9))).toFixed(3)); });
+      if (x < 1) requestAnimationFrame(tick);
+      else {
+        pre.classList.add('is-words-out');
+        setTimeout(function () { pre.classList.add('is-out'); }, 620);
+        setTimeout(function () { clearBoot(); pre.classList.remove('is-in', 'is-words-out', 'is-out'); try { sessionStorage.setItem('kiyan-seen', '1'); } catch (e) {} }, 620 + 1500);
+      }
+    };
+    requestAnimationFrame(tick);
+  } else if (root.classList.contains('is-entering')) {
+    clearTimeout(window.__kiyanBail);
+    ptLabel.textContent = document.body.getAttribute('data-page') || '';
+    pt.classList.add('is-active', 'is-covered');
+    root.classList.remove('is-entering');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { pt.classList.add('is-out'); }); });
+    setTimeout(function () { pt.classList.remove('is-active', 'is-covered', 'is-out'); }, 1950);
+  }
+  if (pt && !reduce) {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      if (a.target === '_blank' || a.hasAttribute('download')) return;
+      var href = a.getAttribute('href'), url;
+      if (!href || /^(mailto:|tel:|javascript:|#)/i.test(href)) return;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+      if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      if (/\.(xml|txt|pdf|zip)$/i.test(url.pathname)) return;
+      e.preventDefault();
+      var file = url.pathname.split('/').pop() || 'index.html';
+      ptLabel.textContent = a.hasAttribute('hreflang') ? a.textContent.trim() : ((T.pages || {})[file] || '');
+      pt.classList.remove('is-covered', 'is-out'); pt.classList.add('is-active');
+      void pt.offsetWidth; pt.classList.add('is-in');
+      setTimeout(function () { location.href = url.href; }, 1250);
+    });
+    // returning via the browser's back button: never leave the sheets covering the page
+    window.addEventListener('pageshow', function (e) { if (e.persisted) { pt.classList.remove('is-active', 'is-in', 'is-covered', 'is-out'); clearBoot(); } });
+  }
+
   /* ---------- theme ---------- */
   var tt = $('#theme-toggle');
   if (tt) tt.addEventListener('click', function () {

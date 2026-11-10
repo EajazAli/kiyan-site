@@ -765,39 +765,49 @@ dialog.search::backdrop{background:rgba(16,15,15,.55);backdrop-filter:blur(4px)}
 /* one photographic language: all photography monochrome, colour comes only from the brand */
 .hcard img{filter:grayscale(1) contrast(1.12) brightness(.96)}
 
-/* ---------- first-visit loader ---------- */
+/* ---------- first-visit loader ----------
+   The Kiyan mark assembles: green (intelligence) arrives from the left, blue (execution)
+   from the right, and the white dot (Kiyan) forms where they meet. */
 .preloader{position:fixed;inset:0;z-index:300;display:none;color:#F5F5F3}
 html.is-preloading .preloader{display:block}
 html.is-preloading,html.is-preloading body{overflow:hidden}
 .pl-sheet,.pl-inner{position:absolute;inset:0;transition:transform 1.15s cubic-bezier(.87,0,.13,1);will-change:transform}
 .pl-sheet--b{background:var(--blue)}.pl-sheet--g{background:var(--green)}.pl-sheet--w{background:#F5F5F3}
-.pl-inner{background:#100F0F;display:grid;grid-template-rows:auto 1fr auto;padding:clamp(20px,4vw,48px) var(--gutter)}
+.pl-inner{background:#100F0F;display:grid;place-items:center;padding:clamp(20px,4vw,48px) var(--gutter);overflow:hidden}
 .preloader.is-out .pl-inner{transform:translateY(-101%)}
 .preloader.is-out .pl-sheet--w{transform:translateY(-101%);transition-delay:.1s}
 .preloader.is-out .pl-sheet--g{transform:translateY(-101%);transition-delay:.2s}
 .preloader.is-out .pl-sheet--b{transform:translateY(-101%);transition-delay:.3s}
-.pl-top,.pl-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;opacity:0;transition:opacity .8s ease .2s}
-.pl-top{align-items:center}
-.preloader.is-in .pl-top,.preloader.is-in .pl-bottom{opacity:1}
-.preloader.is-words-out .pl-top,.preloader.is-words-out .pl-bottom{opacity:0;transition:opacity .4s ease-in}
-.pl-top img{block-size:30px;inline-size:auto}
-.pl-top span,.pl-label{font:500 .75rem var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:#A9ADB5}
-.pl-mid{display:grid;place-items:center}
-.pl-word{font:600 clamp(2.25rem,7.4vw,7rem)/1.02 var(--font-display);letter-spacing:-.04em;display:flex;flex-wrap:wrap;gap:0 .25em;justify-content:center;text-align:center;max-inline-size:12em}
-.pl-word span{display:inline-block;overflow:hidden;padding-block:.08em .14em}
-.pl-word i{display:inline-block;font-style:normal;transform:translateY(115%);transition:transform 1.1s cubic-bezier(.16,1,.3,1)}
-.pl-word em{font-style:normal;color:var(--green)}
-.pl-word span:nth-child(2) i{transition-delay:.08s}.pl-word span:nth-child(3) i{transition-delay:.16s}.pl-word span:nth-child(4) i{transition-delay:.24s}
-.preloader.is-in .pl-word i{transform:none}
-.preloader.is-words-out .pl-word i{transform:translateY(-115%);transition:transform .7s cubic-bezier(.7,0,.84,0)}
-.preloader.is-words-out .pl-word span:nth-child(2) i{transition-delay:.05s}.preloader.is-words-out .pl-word span:nth-child(3) i{transition-delay:.1s}.preloader.is-words-out .pl-word span:nth-child(4) i{transition-delay:.15s}
-.pl-bars{display:grid;gap:6px;inline-size:min(340px,44vw);margin-top:12px}
-.pl-bars span{block-size:3px;background:#2A2A2D;position:relative;overflow:hidden;display:block}
-.pl-bars span::after{content:"";position:absolute;inset:0;transform:scaleX(var(--p,0));transform-origin:left;background:var(--blue)}
-[dir="rtl"] .pl-bars span::after{transform-origin:right}
-.pl-bars span:nth-child(even)::after{background:var(--green)}
-.pl-bars span:last-child::after{background:#F5F5F3}
-.pl-count{font:600 clamp(3rem,9vw,8.5rem)/.85 "Poppins",var(--font-display);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.pl-mid{display:grid;justify-items:center;gap:clamp(28px,5vh,56px);transition:opacity .45s ease-in,transform .45s ease-in}
+.preloader.is-words-out .pl-mid{opacity:0;transform:translateY(-24px)}
+.pl-join{--travel:46vw;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(12px,2.4vw,36px);inline-size:min(100%,1100px)}
+.pl-mark{position:relative;inline-size:clamp(76px,13vw,168px);aspect-ratio:1}
+.pl-half{position:absolute;inset:0;inline-size:100%;block-size:100%;overflow:visible}
+.pl-half--g path{fill:var(--green)}.pl-half--b path{fill:var(--blue)}.pl-half--dot path{fill:#F5F5F3}
+.pl-side{font:600 clamp(1rem,3.3vw,2.75rem)/1 var(--font-display);letter-spacing:-.03em;white-space:nowrap}
+.pl-side--g{color:var(--green);justify-self:end}.pl-side--b{color:var(--blue);justify-self:start}
+/* the two halves and their words start apart and travel inward */
+.pl-half--g,.pl-side--g{opacity:0;transform:translateX(calc(var(--travel) * -1));transition:transform 1.05s cubic-bezier(.65,0,.15,1),opacity .5s ease}
+.pl-half--b,.pl-side--b{opacity:0;transform:translateX(var(--travel));transition:transform 1.05s cubic-bezier(.65,0,.15,1),opacity .5s ease}
+.preloader.is-in .pl-half--g,.preloader.is-in .pl-side--g,.preloader.is-in .pl-half--b,.preloader.is-in .pl-side--b{opacity:1;transform:none}
+/* the dot forms at the moment they lock, with one pulse */
+.pl-half--dot{transform:scale(0);transform-origin:50% 50%;transition:transform .6s cubic-bezier(.34,1.7,.5,1)}
+.preloader.is-joined .pl-half--dot{transform:none}
+.pl-ring{position:absolute;inset:18%;border-radius:32%;border:2px solid #F5F5F3;opacity:0;pointer-events:none}
+.preloader.is-joined .pl-ring{animation:pl-ring .9s cubic-bezier(.16,1,.3,1) both}
+.preloader.is-joined .pl-mark{animation:pl-lock .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pl-ring{from{opacity:.7;transform:scale(.6)}to{opacity:0;transform:scale(2.4)}}
+@keyframes pl-lock{0%{transform:scale(1)}40%{transform:scale(.93)}100%{transform:scale(1)}}
+/* then the line that says it */
+.pl-word{font:600 clamp(1.375rem,3.6vw,3rem)/1.1 var(--font-display);letter-spacing:-.03em;display:flex;flex-wrap:wrap;gap:0 .28em;justify-content:center;text-align:center;max-inline-size:22em}
+.pl-word span{display:inline-block;overflow:hidden;padding-block:.08em .16em}
+.pl-word i{display:inline-block;font-style:normal;transform:translateY(120%);transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.pl-word b{font-weight:inherit;color:var(--green)}
+.pl-word em{font-style:normal;color:var(--blue)}
+.pl-word span:nth-child(1) i{transition-delay:.15s}.pl-word span:nth-child(2) i{transition-delay:.22s}.pl-word span:nth-child(3) i{transition-delay:.29s}.pl-word span:nth-child(4) i{transition-delay:.36s}
+.preloader.is-joined .pl-word i{transform:none}
+[lang="ar"] .pl-side{letter-spacing:0;line-height:1.5}
+[lang="ar"] .pl-word{letter-spacing:0;line-height:1.5}
 
 /* ---------- page-to-page transition ---------- */
 .pt{position:fixed;inset:0;z-index:290;pointer-events:none;visibility:hidden}
@@ -818,8 +828,6 @@ html.is-entering .pt-sheet,.pt.is-covered .pt-sheet{transform:none}
 [lang="ar"] .pl-word{font-size:clamp(2rem,6.4vw,5.75rem);line-height:1.5}
 [lang="ar"] .pl-word span{padding-block:.1em .3em}
 [lang="ar"] .pt-label{font-size:clamp(2rem,6vw,5.25rem);line-height:1.6;padding-block:.1em .35em}
-[lang="ar"] .pl-top span,[lang="ar"] .pl-label{font-size:.8125rem}
-@media (max-width:560px){.pl-top span{display:none}}
 
 /* ---------- role-card media: still or short silent loop, same frame ---------- */
 .hcard .hcard-media{display:block;position:relative;inset:auto;z-index:0;inline-size:100%;block-size:auto;aspect-ratio:4/3.5;object-fit:cover;object-position:50% 30%;filter:grayscale(1) contrast(1.12) brightness(.96);transition:transform 1.2s var(--ease);background:#100F0F}

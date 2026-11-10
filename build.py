@@ -174,6 +174,12 @@ def faq_ld(items):
 def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False).replace("</", "<\\/") + "</script>"
 
+# The Kiyan mark in its three parts, for the first-visit loader: green is intelligence,
+# blue is execution, and the dot that forms where they meet is Kiyan.
+PL_HALF = '<svg class="pl-half pl-half--{k}" viewBox="1062.05 337.66 37.15 37.15" xmlns="http://www.w3.org/2000/svg"><path d="{d}"/></svg>'
+PL_B = "M1075.95 346.97C1077.35 346.26 1078.94 345.85 1080.62 345.85L1091.01 345.85L1091.01 356.24C1091.01 356.95 1090.93 357.65 1090.8 358.33C1090.61 359.24 1090.3 360.1 1089.89 360.91L1095.83 366.86C1097.94 363.84 1099.19 360.19 1099.19 356.24L1099.19 337.66L1080.62 337.66C1076.67 337.66 1073 338.9 1069.99 341.01Z"
+PL_G = "M1085.29 365.5C1083.89 366.21 1082.3 366.62 1080.62 366.62L1070.23 366.62L1070.23 356.23C1070.23 355.52 1070.31 354.82 1070.44 354.14C1070.63 353.23 1070.94 352.37 1071.35 351.56L1065.41 345.61C1063.3 348.63 1062.05 352.28 1062.05 356.23L1062.05 374.81L1080.62 374.81C1084.57 374.81 1088.24 373.57 1091.25 371.46Z"
+PL_DOT = "M1074.71 362.11L1074.71 356.55C1074.71 353.01 1077.6 350.12 1081.14 350.12L1086.53 350.12L1086.53 356.08C1086.53 359.41 1083.83 362.11 1080.51 362.11Z"
 THEME_JS = "(function(d,w){var r=d.documentElement;try{var t=localStorage.getItem('kiyan-theme');if(t==='light'||t==='dark')r.setAttribute('data-theme',t)}catch(e){}r.classList.remove('no-js');if(w.matchMedia&&w.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var s=false;try{s=!!sessionStorage.getItem('kiyan-seen')}catch(e){}r.classList.add(s?'is-entering':'is-preloading');w.__kiyanBail=setTimeout(function(){r.classList.remove('is-entering','is-preloading')},7000)})(document,window)"
 
 # ------------------------------------------------------------ page shell
@@ -296,9 +302,14 @@ def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=Tru
 <div class="preloader" aria-hidden="true">
   <div class="pl-sheet pl-sheet--b"></div><div class="pl-sheet pl-sheet--g"></div><div class="pl-sheet pl-sheet--w"></div>
   <div class="pl-inner">
-    <div class="pl-top"><img src="{A}assets/img/kiyan-logo-white.svg" alt="" width="83" height="34"><span>{t("pl_top")}</span></div>
-    <div class="pl-mid"><div class="pl-word">{"".join(f"<span><i>{w}</i></span>" for w in t("pl_words"))}</div></div>
-    <div class="pl-bottom"><div><span class="pl-label">{t("pl_bars")}</span><div class="pl-bars"><span></span><span></span><span></span><span></span><span></span><span></span></div></div><div class="pl-count" dir="ltr">000</div></div>
+    <div class="pl-mid">
+      <div class="pl-join" dir="ltr">
+        <span class="pl-side pl-side--g">{t("pl_left")}</span>
+        <div class="pl-mark">{PL_HALF.format(k="g", d=PL_G)}{PL_HALF.format(k="b", d=PL_B)}{PL_HALF.format(k="dot", d=PL_DOT)}<i class="pl-ring"></i></div>
+        <span class="pl-side pl-side--b">{t("pl_right")}</span>
+      </div>
+      <div class="pl-word">{"".join(f"<span><i>{w}</i></span>" for w in t("pl_words"))}</div>
+    </div>
   </div>
 </div>
 <div class="pt" aria-hidden="true"><div class="pt-sheet pt-sheet--b"></div><div class="pt-sheet pt-sheet--g"></div><div class="pt-sheet pt-sheet--w"></div><div class="pt-sheet pt-sheet--k"><div class="pt-label"><span></span></div></div></div>

@@ -8,8 +8,8 @@
   var fmt = function (s, o) { return String(s || '').replace(/\{(\w+)\}/g, function (m, k) { return o[k]; }); };
 
   /* ---------- first-visit loader and page-to-page transition ----------
-     First page of a session: sheets in the brand colours cover the screen while the
-     tagline rises and six pillar bars fill, then the sheets peel away upward.
+     First page of a session: the two halves of the Kiyan mark come together, the dot
+     forms between them and the tagline rises, then the brand-colour sheets peel away upward.
      Every later page: sheets sweep up carrying the destination's name, and peel off on arrival. */
   var root = document.documentElement, pre = $('.preloader'), pt = $('.pt');
   var clearBoot = function () { clearTimeout(window.__kiyanBail); root.classList.remove('is-preloading', 'is-entering'); };
@@ -17,22 +17,15 @@
   if (reduce || !pre || !pt) clearBoot();
   else if (root.classList.contains('is-preloading')) {
     clearTimeout(window.__kiyanBail);
-    var count = $('.pl-count', pre), bars = $$('.pl-bars span', pre), t0 = null, DUR = 2000;
+    // intelligence (green) and execution (blue) travel in from either side, lock together,
+    // and the Kiyan dot forms where they meet; then the tagline rises and the sheets peel away
+    var JOIN = 1050, HOLD = 2700, OUT = HOLD + 520;
     window.scrollTo(0, 0);
-    requestAnimationFrame(function () { pre.classList.add('is-in'); });
-    var tick = function (now) {
-      if (t0 === null) t0 = now + 200;
-      var x = Math.max(0, Math.min(1, (now - t0) / DUR)), v = (x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2) * 100;
-      count.textContent = ('00' + Math.round(v)).slice(-3);
-      bars.forEach(function (b, i) { b.style.setProperty('--p', Math.max(0, Math.min(1, (v - i * 9) / (100 - i * 9))).toFixed(3)); });
-      if (x < 1) requestAnimationFrame(tick);
-      else {
-        pre.classList.add('is-words-out');
-        setTimeout(function () { pre.classList.add('is-out'); }, 620);
-        setTimeout(function () { clearBoot(); pre.classList.remove('is-in', 'is-words-out', 'is-out'); try { sessionStorage.setItem('kiyan-seen', '1'); } catch (e) {} }, 620 + 1500);
-      }
-    };
-    requestAnimationFrame(tick);
+    void pre.offsetWidth; setTimeout(function () { pre.classList.add('is-in'); }, 60);
+    setTimeout(function () { pre.classList.add('is-joined'); }, JOIN);
+    setTimeout(function () { pre.classList.add('is-words-out'); }, HOLD);
+    setTimeout(function () { pre.classList.add('is-out'); }, OUT);
+    setTimeout(function () { clearBoot(); pre.classList.remove('is-in', 'is-joined', 'is-words-out', 'is-out'); try { sessionStorage.setItem('kiyan-seen', '1'); } catch (e) {} }, OUT + 1500);
   } else if (root.classList.contains('is-entering')) {
     clearTimeout(window.__kiyanBail);
     ptLabel.textContent = document.body.getAttribute('data-page') || '';

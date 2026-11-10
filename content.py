@@ -53,6 +53,7 @@ UI = {
     "proof_eyebrow": "Right execution in practice", "proof_h": "On-shelf availability is decided at the shelf. We close the loop every week.",
     "proof_p": "Field teams capture the shelf in two minutes. Image recognition reports availability, share of shelf and planogram compliance, and every gap becomes a task that is tracked until it is closed.",
     "proof_link": "See Right Execution",
+    "proof_alt": "A field auditor photographs a shelf; image recognition outlines each product and flags two out-of-stock gaps",
     "proof_stats": [("96–98%", "audit benchmark from AI image recognition"), ("2 min", "per store audit, captured by the field force"), ("−60%", "audit cost compared with a manual audit")],
     "poc_h": "Let’s build a proof of concept.", "poc_p": "No cost, no commitment. One store, one category, one week, and you see the redesign of your shelf with the justification before deciding anything else.",
     "poc_units": ["store", "category", "week"], "poc_btn": "Confirm your pilot store",

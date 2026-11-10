@@ -189,7 +189,7 @@ def header(current):
     def panel(pid, head, desc, items, extra=""):
         return f'''<div class="mega" id="{pid}"><div class="wrap"><div class="mega-head"><strong>{head}</strong><span>{desc}</span></div>
           <div class="mega-body"><div class="mega-grid">{items}</div>{extra}</div></div></div>'''
-    promo = f'''<a class="mega-promo" href="contact.html?topic=poc"><img src="{A}assets/img/photo/shelf-wide.webp" alt="" width="720" height="480" loading="lazy"><strong>{t("mega_feat_h")}</strong><span>{t("mega_feat_p")}</span><span class="mega-promo-link">{t("mg_promo_link")} {I["arrow"]}</span></a>'''
+    promo = f'''<a class="mega-promo" href="contact.html?topic=poc"><img src="{A}assets/img/photo/shelf-wide.webp" alt="" width="1200" height="800" loading="lazy"><strong>{t("mega_feat_h")}</strong><span>{t("mega_feat_p")}</span><span class="mega-promo-link">{t("mg_promo_link")} {I["arrow"]}</span></a>'''
     cur = ' aria-current="page"' if current == "team.html" else ""
     return f'''<a class="skip" href="#main">{t("skip")}</a>
 <header class="site-header">
@@ -363,9 +363,15 @@ def poc_block(pid="poc"):
     <div class="poc-steps">{"".join(f"<div><b>1</b><span>{x}</span></div>" for x in t("poc_units"))}</div></div>'''
 def three_roles():
     T = C.THREE
+    def media(img):
+        """A short silent loop when assets/video/<name>.mp4 exists; the still is its poster and the fallback."""
+        still = f"{A}assets/img/photo/{img}.webp"
+        if (ROOT / f"assets/video/{img}.mp4").exists():
+            return f'<video class="hcard-media" muted loop playsinline preload="none" poster="{still}" width="960" height="720" aria-hidden="true" data-loop><source src="{A}assets/video/{img}.mp4" type="video/mp4"></video>'
+        return f'<img class="hcard-media" src="{still}" alt="" width="1200" height="900" loading="lazy">'
     def card(key, img, mid=False):
         return f'''<article class="hcard{" hcard--mid" if mid else ""} reveal">
-      <img src="{A}assets/img/photo/{img}.webp" alt="" width="800" height="1000" loading="lazy">
+      {media(img)}
       <span class="hcard-tag">{t("role_tag_" + key)}</span>
       <div class="hcard-body"><h3>{t("role_h_" + key)}</h3>{ticks(T[key])}</div></article>'''
     return f'<div class="hcards">{card("m", "manufacturer")}{card("k", "partner", True)}{card("r", "retailer")}</div>'
@@ -432,7 +438,7 @@ def build_home():
 <section class="section on-ink" aria-labelledby="proof-h"><div class="wrap">
   <div class="proof">
     <div class="reveal"><p class="eyebrow">{t("proof_eyebrow")}</p><h2 id="proof-h">{t("proof_h")}</h2><div class="rule"></div><p class="lede">{t("proof_p")}</p><div class="btn-row"><a class="btn btn--light" href="pillars.html#execution">{t("proof_link")} {I["arrow"]}</a></div></div>
-    <div class="proof-stats reveal" style="--d:120ms">{pstats}</div>
+    <div class="reveal" style="--d:120ms"><figure class="proof-shot"><img src="{A}assets/img/photo/shelf-audit.webp" alt="{e(t("proof_alt"))}" width="1400" height="1050" loading="lazy"></figure><div class="proof-stats">{pstats}</div></div>
   </div>
   {poc_block("poc")}
 </div></section>

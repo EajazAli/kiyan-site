@@ -98,6 +98,18 @@
   if (menuBtn) menuBtn.addEventListener('click', function () { setMenu(!nav.classList.contains('open')); });
   $$('#nav a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); setMega(false); }); });
 
+  /* ---------- short silent loops: play only while on screen, never for reduced motion ---------- */
+  var loops = $$('video[data-loop]');
+  if (loops.length && !reduce && 'IntersectionObserver' in window) {
+    var vio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        var v = en.target;
+        if (en.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+      });
+    }, { rootMargin: '200px 0px', threshold: 0.15 });
+    loops.forEach(function (v) { v.muted = true; vio.observe(v); });
+  }
+
   /* ---------- reveal on scroll ---------- */
   var reveals = $$('.reveal');
   if ('IntersectionObserver' in window && !reduce) {

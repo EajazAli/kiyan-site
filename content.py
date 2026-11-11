@@ -292,6 +292,7 @@ for _p, _d in zip(PILLARS, ["Retail census, store universe and coverage", "Categ
     _p["menu"] = _d
 
 UI.update({
+    "credit": "Digital presence engineered & managed by",
     "pl_left": "Intelligence", "pl_right": "Execution",
     "pl_top": "Category management & retail execution", "pl_words": ["Where", "<b>intelligence</b>", "meets", "<em>execution.</em>"], "pl_bars": "Six pillars",
     "pg_names": {"index.html": "Home", "pillars.html": "Pillars", "how-we-work.html": "How we work", "team.html": "Team", "faq.html": "FAQ", "contact.html": "Contact", "legal.html": "Legal", "404.html": "Kiyan"},

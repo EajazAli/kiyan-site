@@ -251,6 +251,7 @@ def footer(current):
     </div>
     <div class="foot-bottom"><span>© {datetime.date.today().year} Kiyan. {t("rights")} · {t("hq")}</span>
       <nav class="foot-legal" aria-label="{t("lg_crumb")}"><a class="foot-lang" href="{other}" lang="{ol}" hreflang="{ol}" aria-label="{e(t("lang_switch_label"))}">{I["globe"]}<span lang="{C.LANG}">{t("lang_current")}</span>{I["chev"]}</a><a href="legal.html#terms">{t("lg_terms")}</a><a href="legal.html#privacy">{t("lg_privacy")}</a><a href="legal.html#security">{t("lg_security")}</a><a href="legal.html#cookies">{t("lg_cookies")}</a><a href="{A}sitemap.xml">{t("sitemap")}</a></nav></div>
+    <p class="foot-credit"><a href="https://www.hnhmena.com" target="_blank" rel="noopener" aria-label="{e(t("credit"))} H&amp;H Technology"><span class="fc-label">{e(t("credit"))}</span><span class="fc-brand"><img class="logo-light" src="{A}assets/img/hh-icon-black.png" alt="" width="157" height="190" loading="lazy"><img class="logo-dark" src="{A}assets/img/hh-icon-white.png" alt="" width="157" height="190" loading="lazy"><bdi dir="ltr" lang="en">H&amp;H Technology</bdi></span></a></p>
   </div>
 </footer>
 <a class="wa" href="https://wa.me/{S["whatsapp"]}" rel="noopener" aria-label="{t("wa_label")}">{I["wa"]}</a>

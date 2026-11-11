@@ -846,3 +846,14 @@ html.is-entering .pt-sheet,.pt.is-covered .pt-sheet{transform:none}
 @keyframes art-out{from{opacity:1;transform:none}to{opacity:0;transform:scale(.95)}}
 @keyframes body-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.space-panel.is-entering .space-art > img,.space-panel.is-entering .space-body > *{animation:none}.art-ghost{display:none}}
+
+/* ---------- site credit: one quiet line under the legal bar ---------- */
+.foot-credit{display:flex;justify-content:center;margin:36px 0 0}
+.foot-credit a{display:inline-flex;align-items:center;gap:14px;text-decoration:none;color:var(--faint);opacity:.6;transition:opacity .25s}
+.foot-credit a:hover,.foot-credit a:focus-visible{opacity:1}
+.fc-label{font:500 .625rem/1 var(--font-mono);letter-spacing:.16em;text-transform:uppercase}
+.fc-brand{display:inline-flex;align-items:center;gap:8px;padding-inline-start:14px;border-inline-start:1px solid var(--line-strong);font:600 .75rem/1 var(--font-text);letter-spacing:.01em;color:var(--muted)}
+.fc-brand img{block-size:20px;inline-size:auto;flex:none}
+[lang="ar"] .fc-label{font-size:.75rem;letter-spacing:0;text-transform:none}
+[lang="ar"] .fc-brand{font-family:"Inter",sans-serif}
+@media (max-width:520px){.foot-credit a{flex-direction:column;gap:10px}.fc-brand{padding-inline-start:0;border-inline-start:0}}

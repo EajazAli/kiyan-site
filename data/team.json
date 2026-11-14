@@ -68,21 +68,55 @@
     {
       "id": "saif-abedi",
       "name": "Saif Abedi",
-      "role": "Partner",
+      "role": "Founder",
       "group": "Partners",
       "focus": [
         "Leadership"
       ],
-      "photo": "",
-      "summary": "Partner at Kiyan, based in Riyadh.",
-      "career": [],
+      "photo": "saif-abedi.webp",
+      "summary": "16+ years in data, commercial strategy and customer experience across Saudi Arabia and the GCC, on both the agency and the client side.",
+      "career": [
+        [
+          "Senior CRM & Insights Manager",
+          "Saudi Entertainment Ventures (SEVEN)"
+        ],
+        [
+          "Head of Market Research & Intelligence",
+          "Goody"
+        ],
+        [
+          "Business Group Manager",
+          "GfK"
+        ],
+        [
+          "Client team lead, FMCG",
+          "Nielsen"
+        ]
+      ],
       "email": "saif.abedi@kiyan.sa",
       "linkedin": "",
       "ar": {
         "name": "سيف عابدي",
-        "role": "شريك",
-        "summary": "شريك في كيان، ومقره الرياض.",
-        "career": []
+        "role": "المؤسس",
+        "summary": "أكثر من 16 عامًا في البيانات والاستراتيجية التجارية وتجربة العملاء في المملكة العربية السعودية ودول الخليج، من جانبَي الوكالة والعميل.",
+        "career": [
+          [
+            "مدير أول لإدارة علاقات العملاء والرؤى",
+            "Saudi Entertainment Ventures (SEVEN)"
+          ],
+          [
+            "رئيس أبحاث السوق والمعلومات",
+            "Goody"
+          ],
+          [
+            "مدير مجموعة أعمال",
+            "GfK"
+          ],
+          [
+            "قائد فريق عملاء السلع الاستهلاكية",
+            "Nielsen"
+          ]
+        ]
       }
     },
     {
@@ -295,6 +329,52 @@
           [
             "مدير التسويق",
             "BAT"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "eajaz-ali",
+      "name": "Eajaz Ali",
+      "role": "Technology Partner",
+      "group": "Partners",
+      "focus": [
+        "Technology"
+      ],
+      "photo": "eajaz-ali.webp",
+      "summary": "AI leadership, technology and digital presence. 15+ years building technology and digital products for hospitals, developers and brands across Saudi Arabia.",
+      "career": [
+        [
+          "Managing Director",
+          "H&H Technology"
+        ],
+        [
+          "Chief Technology Officer",
+          "Mohla"
+        ],
+        [
+          "Co-founder",
+          "SINA Health"
+        ]
+      ],
+      "email": "",
+      "linkedin": "",
+      "ar": {
+        "name": "إعجاز علي",
+        "role": "شريك التقنية",
+        "summary": "قيادة في الذكاء الاصطناعي والتقنية والحضور الرقمي. أكثر من 15 عامًا في بناء المنتجات التقنية والرقمية للمستشفيات والمطوّرين العقاريين والعلامات التجارية في المملكة العربية السعودية.",
+        "career": [
+          [
+            "المدير العام",
+            "H&H Technology"
+          ],
+          [
+            "الرئيس التنفيذي للتقنية",
+            "Mohla"
+          ],
+          [
+            "شريك مؤسس",
+            "SINA Health"
           ]
         ]
       }

@@ -37,7 +37,7 @@ search index. Do not edit the `.html` files by hand; the next build overwrites t
 - AEO / GEO: JSON-LD (Organization, ProfessionalService, Service, FAQPage, BreadcrumbList, Person),
   answer-first FAQ, `llms.txt` in both languages, AI crawlers explicitly allowed
 - Light and dark themes, site search (Ctrl/⌘ K), keyboard-accessible tabs and dialogs, reduced-motion support
-- Self-hosted fonts (Poppins, Inter, IBM Plex Mono, Noto Kufi Arabic; all SIL Open Font License). No third-party requests.
+- Self-hosted fonts (Poppins, Noto Kufi Arabic; SIL Open Font License). No third-party requests unless Tag Manager or the form service is switched on.
 
 ## Before launch
 - Have counsel review the Terms, Privacy, Security and Cookie text (`LEGAL` in `content.py` / `content_ar.py`).
@@ -46,3 +46,24 @@ search index. Do not edit the `.html` files by hand; the next build overwrites t
 - Contact form opens the visitor's email or WhatsApp. Connect a form backend (e.g. Zoho Forms) to capture leads in a CRM.
 - Add Google Analytics / Search Console tags, a Google Business Profile, and a street address for the map.
 - Replace low-resolution portraits with a consistent photo shoot; add LinkedIn URLs in `data/team.json`.
+
+## Added in the November 2026 client review
+
+### Intelligence (articles, English and Arabic)
+- Each article is one file in `content/intelligence/`. The file name becomes the address: `my-article.json` is published as `intelligence-my-article.html` (and `ar/intelligence-my-article.html`).
+- An article appears in a language when it has a title and a body in that language. `"draft": true` keeps it off the site.
+- Editor: open `/admin/` on the site. It saves straight to the GitHub repository, and the deploy workflow rebuilds the site (about a minute).
+  Signing in needs a GitHub account with write access to the repository. "Sign In Using Access Token" works as is; for a "Sign In with GitHub" button, set `base_url` in `admin/config.yml` to a sign-in helper (see the comment there).
+- `feed.xml` and `ar/feed.xml` are RSS feeds of the articles, for other sites and readers.
+
+### Switches in `content.py` (SITE)
+| Setting | What it turns on |
+|---|---|
+| `gtm_id` | Google Tag Manager (e.g. `GTM-ABC1234`). A consent notice appears and nothing loads until the visitor accepts; the legal text updates itself. Add Google Analytics inside Tag Manager. |
+| `form_key` | A Web3Forms access key. The contact form then submits inside the page and emails the address registered with that key; without it the form opens the visitor's own email. |
+
+### Other changes
+- Poppins is the only Latin typeface (400, 500, 600, 700), with the type scale from the Lovable build of kiyan.sa.
+- No page-to-page transition; the first-visit loader shows the mark and the tagline only.
+- Switching language keeps the page, the section on screen and anything typed into the contact form.
+- Headline claims and audit figures are removed; partner titles are not shown (they remain in `data/team.json` if needed later).

@@ -66,6 +66,7 @@ MI = {
  "help": _ic('<circle cx="12" cy="12" r="8.5"/><path d="M9.700 9.600a2.400 2.400 0 1 1 3.500 2.100c-.800.500-1.200 1-1.200 2M12 16.700v.100"/>'),
  "case": _ic('<rect x="3.5" y="7.5" width="17" height="12" rx="1.8"/><path d="M9 7.500V5.300h6v2.200M3.500 12.500h17"/>'),
  "mail": _ic('<rect x="3.5" y="5.5" width="17" height="13" rx="1.8"/><path d="m4 7 8 6 8-6"/>'),
+ "note": _ic('<path d="M6 3.5h8.500L18.500 7.500V20.500H6ZM14 3.500V8h4.500M9 12h6.500M9 15.500h6.500"/>'),
 }
 
 # ------------------------------------------------- generative dot-matrix art
@@ -130,7 +131,7 @@ def art_img(kind):
     return f'<img src="{A}assets/img/art-{kind}.svg" alt="" width="960" height="400" loading="lazy" style="inline-size:100%;block-size:100%;object-fit:cover">'
 
 def universe_svg():
-    fam = "Noto Kufi Arabic, sans-serif" if is_ar() else "IBM Plex Mono, monospace"
+    fam = "Noto Kufi Arabic, sans-serif" if is_ar() else "Poppins, sans-serif"
     ls = "0" if is_ar() else "1.2"; big, small = ("15", "11.5") if is_ar() else ("11", "8.5")
     return f'''<svg viewBox="0 0 520 440" role="img" aria-label="{e(t("svg_label"))}" xmlns="http://www.w3.org/2000/svg" font-family="{fam}" font-size="{big}" letter-spacing="{ls}" direction="{C.DIR}">
 <circle cx="260" cy="220" r="208" fill="none" stroke="#86BC25" stroke-width="1.5" stroke-dasharray="2 7" stroke-linecap="round"/>
@@ -180,11 +181,80 @@ PL_HALF = '<svg class="pl-half pl-half--{k}" viewBox="1062.05 337.66 37.15 37.15
 PL_B = "M1075.95 346.97C1077.35 346.26 1078.94 345.85 1080.62 345.85L1091.01 345.85L1091.01 356.24C1091.01 356.95 1090.93 357.65 1090.8 358.33C1090.61 359.24 1090.3 360.1 1089.89 360.91L1095.83 366.86C1097.94 363.84 1099.19 360.19 1099.19 356.24L1099.19 337.66L1080.62 337.66C1076.67 337.66 1073 338.9 1069.99 341.01Z"
 PL_G = "M1085.29 365.5C1083.89 366.21 1082.3 366.62 1080.62 366.62L1070.23 366.62L1070.23 356.23C1070.23 355.52 1070.31 354.82 1070.44 354.14C1070.63 353.23 1070.94 352.37 1071.35 351.56L1065.41 345.61C1063.3 348.63 1062.05 352.28 1062.05 356.23L1062.05 374.81L1080.62 374.81C1084.57 374.81 1088.24 373.57 1091.25 371.46Z"
 PL_DOT = "M1074.71 362.11L1074.71 356.55C1074.71 353.01 1077.6 350.12 1081.14 350.12L1086.53 350.12L1086.53 356.08C1086.53 359.41 1083.83 362.11 1080.51 362.11Z"
-THEME_JS = "(function(d,w){var r=d.documentElement;try{var t=localStorage.getItem('kiyan-theme');if(t==='light'||t==='dark')r.setAttribute('data-theme',t)}catch(e){}r.classList.remove('no-js');if(w.matchMedia&&w.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var s=false;try{s=!!sessionStorage.getItem('kiyan-seen')}catch(e){}r.classList.add(s?'is-entering':'is-preloading');w.__kiyanBail=setTimeout(function(){r.classList.remove('is-entering','is-preloading')},7000)})(document,window)"
+THEME_JS = "(function(d,w){var r=d.documentElement;try{var t=localStorage.getItem('kiyan-theme');if(t==='light'||t==='dark')r.setAttribute('data-theme',t)}catch(e){}r.classList.remove('no-js');if(w.matchMedia&&w.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var s=false;try{s=!!sessionStorage.getItem('kiyan-seen')}catch(e){}if(!s)r.classList.add('is-preloading');w.__kiyanBail=setTimeout(function(){r.classList.remove('is-preloading')},6000)})(document,window)"
+
+# ------------------------------------------------- intelligence (articles)
+# One JSON file per article in content/intelligence/, written by hand or by the
+# editor at /admin/. The file name is the article's address: my-article.json
+# becomes intelligence-my-article.html in each language that has a title and body.
+import re
+POSTS_DIR = ROOT / "content/intelligence"
+
+def _inline(s):
+    s = e(s, quote=False)
+    s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
+    s = re.sub(r"!\[([^\]]*)\]\(([^)\s]+)\)", lambda m: f'<img src="{asset_url(m.group(2))}" alt="{m.group(1)}" loading="lazy">', s)
+    def link(m):
+        href = m.group(2); ext = ' target="_blank" rel="noopener"' if re.match(r"https?://", href) and BASE not in href else ""
+        return f'<a href="{href}"{ext}>{m.group(1)}</a>'
+    s = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", link, s)
+    s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
+    s = re.sub(r"(?<![*\w])\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", s)
+    return s
+
+def md(text):
+    """Small Markdown reader: headings, paragraphs, lists, quotes, images, links, bold and italic."""
+    out = []
+    for block in re.split(r"\n\s*\n", (text or "").replace("\r\n", "\n").strip()):
+        lines = [l.rstrip() for l in block.split("\n") if l.strip()]
+        if not lines: continue
+        h = re.match(r"(#{1,4})\s+(.*)", lines[0])
+        if h and len(lines) == 1:
+            n = min(max(len(h.group(1)), 2), 4); out.append(f"<h{n}>{_inline(h.group(2))}</h{n}>")
+        elif all(re.match(r"[-*+]\s+", l) for l in lines):
+            out.append("<ul>" + "".join(f"<li>{_inline(re.sub(r'^[-*+]\s+', '', l))}</li>" for l in lines) + "</ul>")
+        elif all(re.match(r"\d+[.)]\s+", l) for l in lines):
+            out.append("<ol>" + "".join(f"<li>{_inline(re.sub(r'^\d+[.)]\s+', '', l))}</li>" for l in lines) + "</ol>")
+        elif all(l.startswith(">") for l in lines):
+            out.append("<blockquote><p>" + _inline(" ".join(l.lstrip("> ") for l in lines)) + "</p></blockquote>")
+        elif len(lines) == 1 and re.fullmatch(r"!\[[^\]]*\]\([^)\s]+\)", lines[0]):
+            out.append(f"<figure>{_inline(lines[0])}</figure>")
+        else:
+            out.append("<p>" + _inline(" ".join(lines)) + "</p>")
+    return "\n".join(out)
+
+def asset_url(src):
+    """Images picked in the editor are stored as /assets/…; make them work from / and /ar/."""
+    return src if re.match(r"(https?:)?//", src) else A + src.lstrip("/")
+
+def load_posts():
+    posts = []
+    if POSTS_DIR.exists():
+        for f in sorted(POSTS_DIR.glob("*.json")):
+            try: d = json.loads(f.read_text(encoding="utf-8"))
+            except ValueError as err: print(f"  skipped {f.name}: {err}"); continue
+            if d.get("draft"): continue
+            slug = re.sub(r"[^a-z0-9]+", "-", f.stem.lower()).strip("-")
+            d["slug"] = slug; d["file"] = f"intelligence-{slug}.html"; d["date"] = str(d.get("date") or TODAY)[:10]
+            d["langs"] = [l for l in ("en", "ar") if (d.get(f"title_{l}") or "").strip() and (d.get(f"body_{l}") or "").strip()]
+            if d["langs"]: posts.append(d)
+    return sorted(posts, key=lambda d: d["date"], reverse=True)
+
+POSTS = load_posts()
+POST_LANGS = {p["file"]: p["langs"] for p in POSTS}
+def posts_here(): return [p for p in POSTS if C.LANG in p["langs"]]
+def post_date(iso):
+    y, m, d = (int(x) for x in iso.split("-")); return f"{d} {t('months')[m - 1]} {y}"
+def read_time(p):
+    words = len(re.findall(r"\S+", p[f"body_{C.LANG}"])); return t("in_min").format(n=max(1, round(words / 200)))
 
 # ------------------------------------------------------------ page shell
 def other_page(current):
-    return ("../" + current if is_ar() else "ar/" + current), ("en" if is_ar() else "ar")
+    """The same page in the other language. An article written in one language only
+    falls back to that language's article list."""
+    ol = "en" if is_ar() else "ar"
+    if current in POST_LANGS and ol not in POST_LANGS[current]: current = "intelligence.html"
+    return ("../" + current if is_ar() else "ar/" + current), ol
 
 def header(current):
     other, ol = other_page(current)
@@ -197,6 +267,7 @@ def header(current):
           <div class="mega-body"><div class="mega-grid">{items}</div>{extra}</div></div></div>'''
     promo = f'''<a class="mega-promo" href="contact.html?topic=poc"><img src="{A}assets/img/photo/shelf-wide.webp" alt="" width="1200" height="800" loading="lazy"><strong>{t("mega_feat_h")}</strong><span>{t("mega_feat_p")}</span><span class="mega-promo-link">{t("mg_promo_link")} {I["arrow"]}</span></a>'''
     cur = ' aria-current="page"' if current == "team.html" else ""
+    cur_in = ' aria-current="page"' if current.startswith("intelligence") else ""
     return f'''<a class="skip" href="#main">{t("skip")}</a>
 <header class="site-header">
   <div class="wrap">
@@ -209,6 +280,7 @@ def header(current):
       {panel("mega-pillars", t("mg_p_h"), t("mg_p_d"), pillars, promo)}
       <button class="nav-link" aria-expanded="false" aria-controls="mega-company">{t("nav_company")} {I["chev"]}</button>
       {panel("mega-company", t("mg_c_h"), t("mg_c_d"), company)}
+      <a href="intelligence.html"{cur_in}>{t("nav_intel")}</a>
       <a href="team.html"{cur}>{t("nav_team")}</a>
       <a class="nav-mobile-only" href="{other}" lang="{ol}" hreflang="{ol}">{t("lang_switch")}</a>
       <a class="btn btn--primary nav-mobile-only" href="contact.html?topic=poc">{t("cta_poc")} {I["arrow"]}</a>
@@ -246,7 +318,7 @@ def footer(current):
         <div class="offices">{offices}</div>
       </div>
       <div><h4>{t("foot_pillars")}</h4><ul>{sp}</ul></div>
-      <div><h4>{t("foot_kiyan")}</h4><ul><li><a href="index.html#execution-gap">{t("foot_gap")}</a></li><li><a href="how-we-work.html">{t("nav_how")}</a></li><li><a href="team.html">{t("nav_team")}</a></li><li><a href="how-we-work.html#poc">{t("foot_poc")}</a></li><li><a href="faq.html">{t("nav_faq")}</a></li><li><a href="how-we-work.html#careers">{t("careers_eyebrow")}</a></li></ul></div>
+      <div><h4>{t("foot_kiyan")}</h4><ul><li><a href="index.html#execution-gap">{t("foot_gap")}</a></li><li><a href="how-we-work.html">{t("nav_how")}</a></li><li><a href="intelligence.html">{t("nav_intel")}</a></li><li><a href="team.html">{t("nav_team")}</a></li><li><a href="how-we-work.html#poc">{t("foot_poc")}</a></li><li><a href="faq.html">{t("nav_faq")}</a></li><li><a href="how-we-work.html#careers">{t("careers_eyebrow")}</a></li></ul></div>
       <div><h4>{t("foot_contact")}</h4><ul><li><a href="mailto:{S["email"]}">{S["email"]}</a></li><li><a href="https://wa.me/{S["whatsapp"]}" rel="noopener">{t("whatsapp")} <bdi dir="ltr">{S["whatsapp_display"]}</bdi></a></li><li><a href="{S["linkedin"]}" rel="noopener">{t("linkedin")}</a></li><li><a href="contact.html">{t("nav_contact")}</a></li><li><a href="{other}" lang="{ol}" hreflang="{ol}">{t("lang_switch")}</a></li></ul></div>
     </div>
     <div class="foot-bottom"><span>© {datetime.date.today().year} Kiyan. {t("rights")} · {t("hq")}</span>
@@ -259,20 +331,32 @@ def footer(current):
   <div class="search-in">{I["search"]}<input id="search-input" type="search" placeholder="{e(t("search_ph"))}" autocomplete="off" aria-label="{t("search_label")}"><button class="icon-btn" id="search-close" aria-label="{t("close")}">{I["close"]}</button></div>
   <div class="search-results" id="search-results" role="listbox"></div>
 </dialog>
-<script src="{A}assets/js/data-{C.LANG}.js" defer></script>
+{consent_banner()}<script src="{A}assets/js/data-{C.LANG}.js" defer></script>
 <script src="{A}assets/js/main.js" defer></script>'''
 
-def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=True):
+def consent_banner():
+    """Shown only when a Tag Manager container is set in SITE. Nothing loads until the visitor accepts."""
+    if not C.SITE.get("gtm_id"): return ""
+    return f'''<div class="consent" id="consent" role="dialog" aria-label="{t("ck_label")}" hidden>
+  <p>{t("ck_p")} <a href="legal.html#cookies">{t("lg_cookies")}</a></p>
+  <div class="consent-btns"><button class="btn btn--ghost" data-consent="no">{t("ck_no")}</button><button class="btn btn--primary" data-consent="yes">{t("ck_yes")}</button></div>
+</div>
+'''
+
+def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=True, image=None, og_type="website", langs=("en", "ar")):
     url = url_for(C.LANG, fname)
+    image = image or f"{BASE}/assets/img/og.png"
+    gtm = f' data-gtm="{e(C.SITE["gtm_id"])}"' if C.SITE.get("gtm_id") else ""
     lds = [org_ld(), {"@context": "https://schema.org", "@type": "WebSite", "@id": BASE + "/#website", "url": BASE + "/", "name": "Kiyan", "inLanguage": ["en", "ar"], "publisher": {"@id": BASE + "/#organization"}}]
     if trail: lds.append(crumbs_ld([("index.html", t("home"))] + trail))
     lds += list(extra_ld)
-    alt = ("".join(f'<link rel="alternate" hreflang="{l}" href="{url_for(l, fname)}">\n' for l in ("en", "ar")) + f'<link rel="alternate" hreflang="x-default" href="{url_for("en", fname)}">') if listed else ""
+    alt = ("".join(f'<link rel="alternate" hreflang="{l}" href="{url_for(l, fname)}">\n' for l in langs) + f'<link rel="alternate" hreflang="x-default" href="{url_for(langs[0], fname)}">') if listed else ""
+    alt += f'\n<link rel="alternate" type="application/rss+xml" title="{e(t("nav_intel"))}" href="{A}{"ar/" if is_ar() else ""}feed.xml">'
     if is_ar(): fonts = f'<link rel="preload" href="{A}assets/fonts/noto-kufi-arabic-arabic-600-normal.woff2" as="font" type="font/woff2" crossorigin>'
-    else: fonts = '<link rel="preload" href="assets/fonts/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>'
+    else: fonts = '<link rel="preload" href="assets/fonts/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="assets/fonts/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>'
     robots = "index, follow, max-snippet:-1, max-image-preview:large" if listed else "noindex"
     out = f'''<!doctype html>
-<html lang="{C.LANG}" dir="{C.DIR}" class="no-js" data-theme="dark">
+<html lang="{C.LANG}" dir="{C.DIR}" class="no-js" data-theme="dark"{gtm}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -282,13 +366,12 @@ def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=Tru
 {alt}
 <meta name="robots" content="{robots}">
 <meta name="theme-color" content="#100F0F">
-<meta property="og:type" content="website">
+<meta property="og:type" content="{og_type}">
 <meta property="og:site_name" content="{e(C.SITE["name"])}">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="{url}">
-<meta property="og:image" content="{BASE}/assets/img/og.png">
-<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image" content="{image}">
 <meta property="og:locale" content="{C.OG_LOCALE}"><meta property="og:locale:alternate" content="{"en_GB" if is_ar() else "ar_SA"}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{A}favicon.svg" type="image/svg+xml">
@@ -304,16 +387,11 @@ def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=Tru
   <div class="pl-sheet pl-sheet--b"></div><div class="pl-sheet pl-sheet--g"></div><div class="pl-sheet pl-sheet--w"></div>
   <div class="pl-inner">
     <div class="pl-mid">
-      <div class="pl-join" dir="ltr">
-        <span class="pl-side pl-side--g">{t("pl_left")}</span>
-        <div class="pl-mark">{PL_HALF.format(k="g", d=PL_G)}{PL_HALF.format(k="b", d=PL_B)}{PL_HALF.format(k="dot", d=PL_DOT)}<i class="pl-ring"></i></div>
-        <span class="pl-side pl-side--b">{t("pl_right")}</span>
-      </div>
+      <div class="pl-mark">{PL_HALF.format(k="g", d=PL_G)}{PL_HALF.format(k="b", d=PL_B)}{PL_HALF.format(k="dot", d=PL_DOT)}<i class="pl-ring"></i></div>
       <div class="pl-word">{"".join(f"<span><i>{w}</i></span>" for w in t("pl_words"))}</div>
     </div>
   </div>
 </div>
-<div class="pt" aria-hidden="true"><div class="pt-sheet pt-sheet--b"></div><div class="pt-sheet pt-sheet--g"></div><div class="pt-sheet pt-sheet--w"></div><div class="pt-sheet pt-sheet--k"><div class="pt-label"><span></span></div></div></div>
 {header(fname)}
 <main id="main">
 {body}
@@ -324,7 +402,7 @@ def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=Tru
 </html>
 '''
     (OUT / fname).write_text(out, encoding="utf-8")
-    if listed: SITEMAP.append((C.LANG, fname, title, desc))
+    if listed: SITEMAP.append((C.LANG, fname, title, desc, tuple(langs)))
 
 def crumbs(trail):
     items = f'<li><a href="index.html">{t("home")}</a></li>' + "".join(
@@ -339,7 +417,7 @@ def initials(name):
 
 def portrait(p):
     if p.get("photo"):
-        alt = t("tm_portrait").format(name=p["name"], role=p["role"])
+        alt = t("tm_portrait").format(name=p["name"])
         return f'<div class="portrait"><img src="{A}assets/img/team/{p["photo"]}" alt="{e(alt)}" width="480" height="480" loading="lazy"></div>'
     return f'<div class="portrait portrait--mono" role="img" aria-label="{e(p["name"])}">{initials(p["latin_name"])}</div>'
 
@@ -352,7 +430,7 @@ def profile_card(p, focus=False):
     attrs = f' id="{p["id"]}" data-focus="{e("|".join(p["focus"]))}"' if focus else ""
     return f'''<article class="profile"{attrs}>
     <div class="profile-photo">{portrait(p)}<div class="profile-chips">{chips}</div></div>
-    <div class="profile-body"><h3>{e(p["name"])}</h3><p class="role">{e(p["role"])}</p><p class="summary">{e(p["summary"])}</p>{cred}{mail}</div></article>'''
+    <div class="profile-body"><h3>{e(p["name"])}</h3><p class="summary">{e(p["summary"])}</p>{cred}{mail}</div></article>'''
 
 def carousel(cards):
     return f'''<div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="{t("car_label")}">
@@ -389,10 +467,28 @@ def three_roles():
     return f'<div class="hcards">{card("m", "manufacturer")}{card("k", "partner", True)}{card("r", "retailer")}</div>'
 def qmark(name): return name + ("؟" if is_ar() else "?")
 
+def shelf_leak():
+    """The execution gap as four shelves. Each starts full; as the section scrolls into view,
+    products fall away and the rest drift out of line, row by row, from strategy to shelf."""
+    tilt = [[0] * 9, [0, -2, 0, 3, 0, -3, 2, 0, 0], [-7, 9, 0, -12, 6, 0, 11, -8, 0], [-14, 0, 12, 0, -19, 0, 0, 16, 0]]
+    gone = [[], [8], [2, 5, 8], [1, 3, 5, 6, 8]]
+    rows = ""
+    for r, (title, line, kept, mess) in enumerate(C.GAP["shelf"]):
+        cells = "".join(f'<i class="{"is-gone" if k in gone[r] else ""}" style="--r:{tilt[r][k]}deg;--k:{k}"></i>' for k in range(9))
+        rows += f'''<div class="leak-row" style="--row:{r}"><div class="leak-shelf" data-mess="{mess}">{cells}</div>
+      <div class="leak-txt"><b>{e(title)}</b><span>{e(line)}</span></div></div>'''
+    return f'''<figure class="leak reveal" style="--d:120ms" role="img" aria-label="{e(t("gap_alt"))}">
+    <figcaption>{t("gap_cap")}</figcaption>{rows}</figure>'''
+
+def post_card(p):
+    img = f'<img src="{asset_url(p["image"])}" alt="" loading="lazy">' if p.get("image") else f'<span class="pc-art">{art_img("space")}</span>'
+    return f'''<a class="post-card" href="{p["file"]}"><div class="pc-media">{img}</div>
+    <div class="pc-body"><span class="mono">{post_date(p["date"])} · {read_time(p)}</span><h3>{e(p[f"title_{C.LANG}"])}</h3>
+    <p>{e(p.get(f"summary_{C.LANG}") or "")}</p><span class="arrow-link">{t("in_read")} {I["arrow"]}</span></div></a>'''
+
 # ================================================================= HOME
 def build_home():
     G = C.GAP
-    funnel = "".join(f'<div class="funnel-row"><div class="funnel-bar" style="--w:{w}%;--c:{c};--o:{o}"><b>{n}</b><span>{d}</span></div></div>' for n, d, w, c, o in G["stages"])
     points = "".join(f'<div class="reveal" style="--d:{i*90}ms"><span class="mono">{a}</span><h3>{b}</h3><p>{c}</p></div>' for i, (a, b, c) in enumerate(G["points"]))
     impacts = "".join(f"<div><b>{a}</b>{b}</div>" for a, b in G["impacts"])
     stats = "".join(f'<div class="stat"><b dir="ltr">{a}' + (f"<sup>{s}</sup>" if s else "") + f'</b><span>{d}</span></div>' for a, s, d in t("stats"))
@@ -405,6 +501,15 @@ def build_home():
       <a class="arrow-link" href="pillars.html#{p["id"]}">{t("p_explore").format(x=e(p["name"]))} {I["arrow"]}</a></div></article>''' for i, p in enumerate(C.PILLARS))
     ppl = carousel("".join(profile_card(p) for p in people()))
     pstats = "".join(f"<div>{num(a)}<span>{b}</span></div>" for a, b in t("proof_stats"))
+    pstats = f'<div class="proof-stats">{pstats}</div>' if pstats else ""
+    stats_band = f'<section aria-label="{t("stats_label")}"><div class="wrap"><div class="stats">{stats}</div></div></section>' if stats else ""
+    latest = posts_here()[:3]
+    intel = f'''
+<section class="section" id="intelligence" aria-labelledby="intel-h"><div class="wrap">
+  <div class="section-head"><div><p class="eyebrow eyebrow--blue">{t("in_eyebrow")}</p><h2 id="intel-h">{t("in_home_h")}</h2></div><p class="muted">{t("in_p")}</p></div>
+  <div class="post-grid">{"".join(post_card(p) for p in latest)}</div>
+  <p style="margin-top:32px"><a class="arrow-link" href="intelligence.html">{t("in_all")} {I["arrow"]}</a></p>
+</div></section>''' if latest else ""
     body = f'''
 <section class="hero on-ink" aria-labelledby="hero-h">
   <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
@@ -417,12 +522,11 @@ def build_home():
   <div class="hero-state" aria-hidden="true"><span>{t("hero_signal")}</span><i id="hero-bar"></i><b id="hero-label">{t("hero_decision")}</b></div>
 </section>
 
-<section aria-label="{t("stats_label")}"><div class="wrap"><div class="stats">{stats}</div></div></section>
-
+{stats_band}
 <section class="section" id="execution-gap" aria-labelledby="gap-h"><div class="wrap">
   <div class="gap-grid">
     <div class="reveal"><p class="eyebrow eyebrow--blue">{t("gap_eyebrow")}</p><h2 id="gap-h">{G["title"]}</h2><div class="rule"></div><p class="lede">{G["lede"]}</p></div>
-    <div class="reveal" style="--d:120ms"><div class="funnel">{funnel}</div><div class="funnel-foot"><span>{t("gap_from")}</span><span>{t("gap_to")}</span></div></div>
+    {shelf_leak()}
   </div>
   <div class="gap-points">{points}</div>
   <p class="mini-label" style="margin-top:clamp(40px,5vw,64px)">{t("gap_impact")}</p>
@@ -450,7 +554,7 @@ def build_home():
 <section class="section on-ink" aria-labelledby="proof-h"><div class="wrap">
   <div class="proof">
     <div class="reveal"><p class="eyebrow">{t("proof_eyebrow")}</p><h2 id="proof-h">{t("proof_h")}</h2><div class="rule"></div><p class="lede">{t("proof_p")}</p><div class="btn-row"><a class="btn btn--light" href="pillars.html#execution">{t("proof_link")} {I["arrow"]}</a></div></div>
-    <div class="reveal" style="--d:120ms"><figure class="proof-shot"><img src="{A}assets/img/photo/shelf-audit.webp" alt="{e(t("proof_alt"))}" width="1400" height="1050" loading="lazy"></figure><div class="proof-stats">{pstats}</div></div>
+    <div class="reveal" style="--d:120ms"><figure class="proof-shot"><img src="{A}assets/img/photo/shelf-audit.webp" alt="{e(t("proof_alt"))}" width="1400" height="1050" loading="lazy"></figure>{pstats}</div>
   </div>
   {poc_block("poc")}
 </div></section>
@@ -461,6 +565,7 @@ def build_home():
   <div class="pedigree reveal"><span class="mono">{t("pedigree")}</span>{"".join(f'<span dir="ltr">{f}</span>' for f in C.FIRMS)}</div>
   <p style="margin-top:32px"><a class="arrow-link" href="team.html">{t("people_link")} {I["arrow"]}</a></p>
 </div></section>
+{intel}
 
 <section class="section section--soft" aria-labelledby="faq-h"><div class="wrap"><div class="split">
   <div><p class="eyebrow">{t("faq_eyebrow")}</p><h2 id="faq-h">{t("faq_h")}</h2><p class="muted" style="margin-top:1.25rem">{t("faq_p")}</p><p style="margin-top:24px"><a class="arrow-link" href="faq.html">{t("faq_all")} {I["arrow"]}</a></p></div>
@@ -518,9 +623,9 @@ def build_pillars():
   {pillar_extra(p["id"])}
   <p style="margin-top:32px"><a class="arrow-link" href="contact.html?topic={p["id"]}">{t("pp_poc")} {I["arrow"]}</a></p>
 </div></section>'''
-    jump = "".join(f'<a class="chip" style="text-decoration:none" href="#{p["id"]}">{p["n"]} {e(p["name"])}</a>' for p in C.PILLARS)
+    jump = "".join(f'<a href="#{p["id"]}"><span>{p["n"]}</span>{e(p["name"])}</a>' for p in C.PILLARS)
     trail = [("pillars.html", t("pp_crumb"))]
-    body = page_hero(trail, t("pp_eyebrow"), t("pp_h"), t("pp_p"), f'<div class="chips" style="margin-top:2rem">{jump}</div>') + secs + f'''
+    body = page_hero(trail, t("pp_eyebrow"), t("pp_h"), t("pp_p")) + f'<nav class="pnav" id="pnav" aria-label="{t("pp_nav")}"><div class="wrap">{jump}</div></nav>' + secs + f'''
 <section class="section section--soft" aria-labelledby="poc-h2"><div class="wrap"><h2 class="sr-only" id="poc-h2">{t("poc_eyebrow")}</h2>{poc_block("poc")}</div></section>'''
     svc = [{"@context": "https://schema.org", "@type": "Service", "name": p["name"], "serviceType": "Category management consulting", "provider": {"@id": BASE + "/#organization"},
             "areaServed": "Saudi Arabia", "url": url_for(C.LANG, "pillars.html") + "#" + p["id"], "description": p["title"] + " " + p["lede"]} for p in C.PILLARS]
@@ -576,7 +681,7 @@ def build_team():
     dialogs = ""
     persons = []
     for p in P:
-        d = {"@type": "Person", "name": p["latin_name"], "jobTitle": p["role"], "description": p["summary"], "worksFor": {"@id": BASE + "/#organization"}, "url": url_for(C.LANG, "team.html") + "#" + p["id"]}
+        d = {"@type": "Person", "name": p["latin_name"], "description": p["summary"], "worksFor": {"@id": BASE + "/#organization"}, "url": url_for(C.LANG, "team.html") + "#" + p["id"]}
         if p["name"] != p["latin_name"]: d["alternateName"] = p["name"]
         if p.get("photo"): d["image"] = f'{BASE}/assets/img/team/{p["photo"]}'
         if p.get("email"): d["email"] = p["email"]
@@ -607,10 +712,16 @@ def build_contact():
     S = C.SITE; trail = [("contact.html", t("ct_crumb"))]
     opts = "".join(f'<option value="{p["id"]}">{e(p["name"])}</option>' for p in C.PILLARS)
     ty = t("ct_types")
-    plist = "".join(f'<p><a href="mailto:{p["email"]}">{e(p["name"])}</a><br>{e(p["role"])} · <bdi dir="ltr">{p["email"]}</bdi></p>' for p in people() if p.get("email"))
+    plist = "".join(f'<p><a href="mailto:{p["email"]}">{e(p["name"])}</a><br><bdi dir="ltr">{p["email"]}</bdi></p>' for p in people() if p.get("email"))
+    inline = bool(S.get("form_key"))   # with a form key the enquiry is sent from inside the page; without one it opens the visitor's email
+    send = f'<button class="btn btn--primary" type="submit" data-sending="{e(t("ct_sending"))}">{t("ct_send_inline") if inline else t("ct_send")} {I["arrow"]}</button>'
+    hooks = f' data-endpoint="{e(S["form_endpoint"])}" data-key="{e(S["form_key"])}"' if inline else ""
     body = page_hero(trail, t("ct_eyebrow"), t("ct_h"), t("ct_p")) + f'''
 <section class="section section--tight"><div class="wrap"><div class="contact-grid">
-  <form class="form" id="contact-form" action="mailto:{S["email"]}" method="post" enctype="text/plain">
+  <div class="form-wrap">
+  <div class="form-done" id="form-done" role="status" tabindex="-1" hidden><h2>{t("ct_ok_h")}</h2><p>{t("ct_ok_p")}</p><button class="btn btn--ghost" type="button" id="form-again">{t("ct_again")}</button></div>
+  <form class="form" id="contact-form" action="mailto:{S["email"]}" method="post" enctype="text/plain"{hooks}>
+    <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div><span class="sr-only" id="type-l">{t("ct_type")}</span><div class="seg" role="radiogroup" aria-labelledby="type-l">
       <input type="radio" name="type" id="ty-poc" value="{ty[0]}" checked><label for="ty-poc">{ty[0]}</label>
       <input type="radio" name="type" id="ty-call" value="{ty[1]}"><label for="ty-call">{ty[1]}</label>
@@ -621,9 +732,11 @@ def build_contact():
     <div class="field"><label for="f-email">{t("ct_email")}</label><input id="f-email" name="email" type="email" dir="ltr" autocomplete="email" required></div></div>
     <div class="field"><label for="f-topic">{t("ct_topic")}</label><select id="f-topic" name="topic"><option value="">{t("ct_unsure")}</option>{opts}</select></div>
     <div class="field"><label for="f-msg">{t("ct_msg")}</label><textarea id="f-msg" name="message" placeholder="{e(t("ct_msg_ph"))}"></textarea></div>
-    <div class="btn-row" style="margin-top:0"><button class="btn btn--primary" type="submit">{t("ct_send")} {I["arrow"]}</button><a class="btn btn--ghost" id="wa-send" href="https://wa.me/{S["whatsapp"]}" rel="noopener">{t("ct_wa")}</a></div>
-    <p class="form-note">{t("ct_note")}</p>
+    <div class="btn-row" style="margin-top:0">{send}<a class="btn btn--ghost" id="wa-send" href="https://wa.me/{S["whatsapp"]}" rel="noopener">{t("ct_wa")}</a></div>
+    <p class="form-error" id="form-error" role="alert" hidden>{t("ct_err")}</p>
+    <p class="form-note">{t("ct_note_inline") if inline else t("ct_note")}</p>
   </form>
+  </div>
   <aside class="contact-list" aria-label="{t("ct_direct")}">
     <div><h3>{t("ct_email_h")}</h3><a href="mailto:{S["email"]}" dir="ltr">{S["email"]}</a></div>
     <div><h3>{t("whatsapp")}</h3><a href="https://wa.me/{S["whatsapp"]}" rel="noopener" dir="ltr">{S["whatsapp_display"]}</a></div>
@@ -637,8 +750,12 @@ def build_contact():
 
 def build_legal():
     trail = [("legal.html", t("lg_crumb"))]
-    nav = "".join(f'<li><a href="#{i}">{e(h)}</a></li>' for i, h, _ in C.LEGAL)
-    secs = "".join(f'<section id="{i}" class="legal-sec"><h2>{e(h)}</h2>' + "".join(f"<p>{e(x)}</p>" for x in ps) + "</section>" for i, h, ps in C.LEGAL)
+    legal = [(i, h, list(ps)) for i, h, ps in C.LEGAL]
+    swaps = (C.LEGAL_FORM if C.SITE.get("form_key") else []) + (C.LEGAL_GTM if C.SITE.get("gtm_id") else [])
+    for sec, n, text in swaps:      # the legal text follows what is actually switched on
+        next(ps for i, _, ps in legal if i == sec)[n] = text
+    nav = "".join(f'<li><a href="#{i}">{e(h)}</a></li>' for i, h, _ in legal)
+    secs = "".join(f'<section id="{i}" class="legal-sec"><h2>{e(h)}</h2>' + "".join(f"<p>{e(x)}</p>" for x in ps) + "</section>" for i, h, ps in legal)
     body = page_hero(trail, t("lg_crumb"), t("lg_h"), t("lg_p")) + f'''
 <section class="section section--tight"><div class="wrap"><div class="split"><ul class="legal-nav">{nav}</ul><div class="legal">{secs}</div></div></div></section>'''
     page("legal.html", t("t_legal"), t("d_legal"), body, trail=trail, cta=False)
@@ -647,17 +764,57 @@ def build_404():
     body = f'<section class="page-hero"><div class="wrap" style="min-height:50vh"><p class="eyebrow">404</p><h1>{t("nf_h")}</h1><p class="lede">{t("nf_p")}</p><div class="btn-row"><a class="btn btn--primary" href="index.html">{t("nf_btn")} {I["arrow"]}</a><a class="btn btn--ghost" href="pillars.html">{t("hero_secondary")}</a></div></div></section>'
     page("404.html", t("t_404"), t("nf_p"), body, cta=False, listed=False)
 
+# ========================================================= INTELLIGENCE
+def build_intel():
+    posts = posts_here(); trail = [("intelligence.html", t("in_crumb"))]
+    grid = f'<div class="post-grid">{"".join(post_card(p) for p in posts)}</div>' if posts else f'<p class="lede">{t("in_empty")}</p>'
+    body = page_hero(trail, t("in_eyebrow"), t("in_h"), t("in_p")) + f'''
+<section class="section section--tight" aria-label="{t("in_crumb")}"><div class="wrap">{grid}</div></section>'''
+    blog = {"@context": "https://schema.org", "@type": "Blog", "name": t("nav_intel"), "url": url_for(C.LANG, "intelligence.html"), "inLanguage": C.LANG, "publisher": {"@id": BASE + "/#organization"},
+            "blogPost": [{"@type": "BlogPosting", "headline": p[f"title_{C.LANG}"], "datePublished": p["date"], "url": url_for(C.LANG, p["file"])} for p in posts]}
+    page("intelligence.html", t("t_intel"), t("d_intel"), body, trail=trail, extra_ld=[blog])
+    for p in posts: build_post(p, [q for q in posts if q is not p][:2])
+
+def build_post(p, more):
+    L = C.LANG; title = p[f"title_{L}"]; summary = p.get(f"summary_{L}") or ""; url = url_for(L, p["file"])
+    trail = [("intelligence.html", t("in_crumb")), (p["file"], title)]
+    cover = BASE + "/" + p["image"].lstrip("/") if p.get("image") and not re.match(r"https?://", p["image"]) else p.get("image")
+    by = f' · {t("in_by").format(x=e(p["author"]))}' if p.get("author") else ""
+    q = lambda s: __import__("urllib.parse").parse.quote(s, safe="")
+    share = f'''<div class="share" aria-label="{t("in_share")}"><span class="mono">{t("in_share")}</span>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={q(url)}" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://twitter.com/intent/tweet?url={q(url)}&amp;text={q(title)}" target="_blank" rel="noopener">X</a>
+      <a href="https://wa.me/?text={q(title + " " + url)}" target="_blank" rel="noopener">{t("whatsapp")}</a>
+      <button type="button" data-copy="{url}" data-done="{e(t("in_copied"))}">{t("in_copy")}</button></div>'''
+    fig = f'<figure class="post-cover"><img src="{asset_url(p["image"])}" alt="" width="1600" height="900"></figure>' if p.get("image") else ""
+    extra = f'''<section class="section section--soft" aria-labelledby="more-h"><div class="wrap"><h2 id="more-h" class="h-sub" style="margin-bottom:28px">{t("in_more")}</h2>
+  <div class="post-grid">{"".join(post_card(x) for x in more)}</div></div></section>''' if more else ""
+    body = f'''<article class="post">
+<header class="page-hero post-hero"><div class="wrap">{crumbs(trail)}
+  <p class="eyebrow"><time datetime="{p["date"]}">{post_date(p["date"])}</time> · {read_time(p)}{by}</p>
+  <h1>{e(title)}</h1>{f'<p class="lede">{e(summary)}</p>' if summary else ""}</div></header>
+<div class="wrap post-wrap">{fig}
+  <div class="prose">{md(p[f"body_{L}"])}</div>
+  {share}
+  <p style="margin-top:32px"><a class="arrow-link" href="intelligence.html">{t("in_back")} {I["arrow"]}</a></p>
+</div></article>{extra}'''
+    art = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": title, "description": summary, "datePublished": p["date"], "dateModified": p.get("updated") or p["date"],
+           "inLanguage": L, "mainEntityOfPage": url, "url": url, "image": cover or f"{BASE}/assets/img/og.png",
+           "author": {"@type": "Person", "name": p["author"]} if p.get("author") else {"@id": BASE + "/#organization"}, "publisher": {"@id": BASE + "/#organization"}}
+    page(p["file"], f'{title} | {C.SITE["name"]}', summary or title, body, trail=trail, extra_ld=[art], image=cover, og_type="article", langs=tuple(p["langs"]))
+
 # ------------------------------------------------------- per-language data
 def build_data():
-    idx = [{"k": t("k_page"), "t": ti.split(" | ")[0], "d": d, "u": f} for l, f, ti, d in SITEMAP if l == C.LANG]
+    idx = [{"k": t("k_page"), "t": ti.split(" | ")[0], "d": d, "u": f} for l, f, ti, d, _ in SITEMAP if l == C.LANG]
     idx += [{"k": t("k_pillar"), "t": p["name"], "d": p["q"] + " " + p["title"], "u": "pillars.html#" + p["id"], "x": " ".join(p["chips"])} for p in C.PILLARS]
     idx += [{"k": t("k_solution"), "t": c[0], "d": c[2], "u": "pillars.html#" + p["id"], "x": " ".join(c[1])} for p in C.PILLARS for c in p["cards"]]
     idx += [{"k": t("k_solution"), "t": a, "d": b, "u": "pillars.html#route-to-market"} for a, b in C.LEAKS]
     idx += [{"k": t("k_solution"), "t": t("seg_h"), "d": t("seg_p"), "u": "pillars.html#segmentation"},
             {"k": t("k_solution"), "t": t("poc_h"), "d": t("poc2_h") + " " + t("poc2_p"), "u": "how-we-work.html#poc"}]
-    idx += [{"k": t("k_person"), "t": p["name"], "d": p["role"] + ". " + p["summary"], "u": "team.html#" + p["id"], "x": p["latin_name"]} for p in people()]
+    idx += [{"k": t("k_person"), "t": p["name"], "d": p["summary"], "u": "team.html#" + p["id"], "x": p["latin_name"]} for p in people()]
     idx += [{"k": t("k_question"), "t": q, "d": a[:150] + "…", "u": "faq.html"} for q, a in C.FAQ]
     keys = ["q_tap", "q_marked", "q_none_h", "q_none_p", "q_one", "q_many", "q_start", "q_poc", "q_prefill", "s_empty", "m_enquiry", "m_pillar", "m_new", "ct_name", "ct_role", "ct_company", "ct_email"]
+    # (articles are already in the index as pages, through SITEMAP)
     T = {k: t(k) for k in keys}; T["pages"] = t("pg_names"); T["sep"] = "، " if is_ar() else ", "; T["sep2"] = "؛ " if is_ar() else "; "
     (ROOT / f"assets/js/data-{C.LANG}.js").write_text("window.KIYAN_INDEX=" + json.dumps(idx, ensure_ascii=False) + ";window.KIYAN_T=" + json.dumps(T, ensure_ascii=False) + ";", encoding="utf-8")
 
@@ -665,7 +822,8 @@ def build_language(mod):
     global C, A, OUT
     C = mod; A = "../" if mod.LANG == "ar" else ""; OUT = ROOT / "ar" if mod.LANG == "ar" else ROOT
     OUT.mkdir(exist_ok=True)
-    for b in (build_home, build_pillars, build_how, build_team, build_faq, build_contact, build_legal, build_404): b()
+    for old in OUT.glob("intelligence-*.html"): old.unlink()      # articles removed in the editor disappear from the site
+    for b in (build_home, build_pillars, build_how, build_team, build_intel, build_faq, build_contact, build_legal, build_404): b()
     build_data()
 
 # ---------------------------------------------------------------- extras
@@ -677,13 +835,22 @@ def build_extras():
     (ROOT / "site.webmanifest").write_text(json.dumps({"name": "Kiyan", "short_name": "Kiyan", "description": EN.SITE["tagline"], "start_url": "./", "display": "browser", "background_color": "#100F0F", "theme_color": "#100F0F",
         "icons": [{"src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png"}]}, indent=1))
     bots = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User", "Google-Extended", "Applebot-Extended", "Bingbot", "CCBot"]
-    (ROOT / "robots.txt").write_text("User-agent: *\nAllow: /\n\n# AI search and answer engines are welcome to read and cite this site.\n" + "".join(f"User-agent: {b}\nAllow: /\n\n" for b in bots) + f"Sitemap: {BASE}/sitemap.xml\n")
+    (ROOT / "robots.txt").write_text("User-agent: *\nAllow: /\nDisallow: /admin/\n\n# AI search and answer engines are welcome to read and cite this site.\n" + "".join(f"User-agent: {b}\nAllow: /\n\n" for b in bots) + f"Sitemap: {BASE}/sitemap.xml\n")
     prio = {"index.html": "1.0", "pillars.html": "0.9", "contact.html": "0.8"}
     rows = ""
-    for l, f, _, _ in SITEMAP:
-        alts = "".join(f'<xhtml:link rel="alternate" hreflang="{x}" href="{url_for(x, f)}"/>' for x in ("en", "ar"))
+    for l, f, _, _, langs in SITEMAP:
+        alts = "".join(f'<xhtml:link rel="alternate" hreflang="{x}" href="{url_for(x, f)}"/>' for x in langs)
         rows += f'  <url><loc>{url_for(l, f)}</loc><lastmod>{TODAY}</lastmod><priority>{prio.get(f, "0.7")}</priority>{alts}</url>\n'
     (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + rows + "</urlset>\n")
+    # RSS, one feed per language, so articles can be picked up by other sites and readers
+    for mod in (EN, AR):
+        L = mod.LANG; U = mod.UI; home = url_for(L, "intelligence.html")
+        items = "".join(f'<item><title>{e(p[f"title_{L}"])}</title><link>{url_for(L, p["file"])}</link><guid isPermaLink="true">{url_for(L, p["file"])}</guid>'
+                        f'<pubDate>{datetime.datetime.strptime(p["date"], "%Y-%m-%d").strftime("%a, %d %b %Y 09:00:00 +0300")}</pubDate><description>{e(p.get(f"summary_{L}") or "")}</description></item>\n'
+                        for p in POSTS if L in p["langs"])
+        (ROOT / ("ar/feed.xml" if L == "ar" else "feed.xml")).write_text(
+            f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>{e(mod.SITE["name"])}: {e(U["nav_intel"])}</title><link>{home}</link>'
+            f'<description>{e(U["d_intel"])}</description><language>{L}</language>\n{items}</channel></rss>\n', encoding="utf-8")
     for mod in (EN, AR):
         S = mod.SITE; U = mod.UI
         L = [f"# {S['name']}", "", f"> {S['description']} \"{S['tagline']}\"", "", f"## {U['p_eyebrow']}", ""]
@@ -691,7 +858,7 @@ def build_extras():
         L += ["", f"## {U['how_h']}", "", U["hw_p"], "", f"## {U['poc_eyebrow']}", "", U["poc2_h"] + " " + U["poc2_p"], "", f"## {U['nav_team']}", ""]
         for p in TEAM["people"]:
             q = {**p, **(p.get("ar", {}) if mod.LANG == "ar" else {})}
-            L.append(f"- {q['name']}, {q['role']}. {q['summary']}")
+            L.append(f"- {q['name']}. {q['summary']}")
         L += ["", f"## {U['nav_faq']}", ""]
         for q, a in mod.FAQ: L += [f"### {q}", a, ""]
         L += [f"## {U['nav_contact']}", "", f"- {S['email']}", f"- WhatsApp: {S['whatsapp_display']}", f"- {S['linkedin']}", f"- {url_for(mod.LANG, 'index.html')}",

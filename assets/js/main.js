@@ -7,52 +7,80 @@
   var T = window.KIYAN_T || {}, RTL = document.documentElement.dir === 'rtl';
   var fmt = function (s, o) { return String(s || '').replace(/\{(\w+)\}/g, function (m, k) { return o[k]; }); };
 
-  /* ---------- first-visit loader and page-to-page transition ----------
-     First page of a session: the two halves of the Kiyan mark come together, the dot
-     forms between them and the tagline rises, then the brand-colour sheets peel away upward.
-     Every later page: sheets sweep up carrying the destination's name, and peel off on arrival. */
-  var root = document.documentElement, pre = $('.preloader'), pt = $('.pt');
-  var clearBoot = function () { clearTimeout(window.__kiyanBail); root.classList.remove('is-preloading', 'is-entering'); };
-  var ptLabel = pt && $('.pt-label span', pt);
-  if (reduce || !pre || !pt) clearBoot();
+  /* ---------- first-visit loader ----------
+     First page of a session only: the two halves of the Kiyan mark come together, the dot
+     forms between them and the tagline rises, then the brand-colour sheets peel away.
+     Moving from page to page is an ordinary, immediate page load. */
+  var root = document.documentElement, pre = $('.preloader');
+  var clearBoot = function () { clearTimeout(window.__kiyanBail); root.classList.remove('is-preloading'); };
+  if (reduce || !pre) clearBoot();
   else if (root.classList.contains('is-preloading')) {
     clearTimeout(window.__kiyanBail);
-    // intelligence (green) and execution (blue) travel in from either side, lock together,
-    // and the Kiyan dot forms where they meet; then the tagline rises and the sheets peel away
-    var JOIN = 1050, HOLD = 2700, OUT = HOLD + 520;
+    var JOIN = 900, HOLD = 2300, OUT = HOLD + 450;
     window.scrollTo(0, 0);
     void pre.offsetWidth; setTimeout(function () { pre.classList.add('is-in'); }, 60);
     setTimeout(function () { pre.classList.add('is-joined'); }, JOIN);
     setTimeout(function () { pre.classList.add('is-words-out'); }, HOLD);
     setTimeout(function () { pre.classList.add('is-out'); }, OUT);
     setTimeout(function () { clearBoot(); pre.classList.remove('is-in', 'is-joined', 'is-words-out', 'is-out'); try { sessionStorage.setItem('kiyan-seen', '1'); } catch (e) {} }, OUT + 1500);
-  } else if (root.classList.contains('is-entering')) {
-    clearTimeout(window.__kiyanBail);
-    ptLabel.textContent = document.body.getAttribute('data-page') || '';
-    pt.classList.add('is-active', 'is-covered');
-    root.classList.remove('is-entering');
-    requestAnimationFrame(function () { requestAnimationFrame(function () { pt.classList.add('is-out'); }); });
-    setTimeout(function () { pt.classList.remove('is-active', 'is-covered', 'is-out'); }, 1950);
   }
-  if (pt && !reduce) {
-    document.addEventListener('click', function (e) {
-      var a = e.target.closest ? e.target.closest('a[href]') : null;
-      if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-      if (a.target === '_blank' || a.hasAttribute('download')) return;
-      var href = a.getAttribute('href'), url;
-      if (!href || /^(mailto:|tel:|javascript:|#)/i.test(href)) return;
-      try { url = new URL(a.href, location.href); } catch (err) { return; }
-      if (url.origin !== location.origin || url.pathname === location.pathname) return;
-      if (/\.(xml|txt|pdf|zip)$/i.test(url.pathname)) return;
-      e.preventDefault();
-      var file = url.pathname.split('/').pop() || 'index.html';
-      ptLabel.textContent = a.hasAttribute('hreflang') ? a.textContent.trim() : ((T.pages || {})[file] || '');
-      pt.classList.remove('is-covered', 'is-out'); pt.classList.add('is-active');
-      void pt.offsetWidth; pt.classList.add('is-in');
-      setTimeout(function () { location.href = url.href; }, 1250);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) clearBoot(); });
+
+  /* ---------- language switch keeps your place ----------
+     The other language opens on the same page, at the same section, with the same
+     enquiry details, instead of starting again from the top. */
+  var LANG_KEY = 'kiyan-lang-pos';
+  $$('a[hreflang]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      var marks = $$('main [id]'), at = null;
+      marks.forEach(function (el) { if (el.offsetParent !== null && el.getBoundingClientRect().top <= 140) at = el; });
+      var max = document.documentElement.scrollHeight - window.innerHeight, pos = { r: max > 0 ? window.scrollY / max : 0 };
+      if (at) { var rc = at.getBoundingClientRect(); pos.id = at.id; pos.f = rc.height > 0 ? Math.max(0, -rc.top) / rc.height : 0; }
+      var f = $('#contact-form');
+      if (f) { pos.form = {}; ['name', 'role', 'company', 'email', 'topic', 'message'].forEach(function (n) { pos.form[n] = f.elements[n].value; }); pos.type = (f.querySelector('input[name="type"]:checked') || {}).id; }
+      try { sessionStorage.setItem(LANG_KEY, JSON.stringify(pos)); } catch (e) {}
+      if (location.search && a.getAttribute('href').indexOf('?') < 0) a.setAttribute('href', a.getAttribute('href') + location.search);
     });
-    // returning via the browser's back button: never leave the sheets covering the page
-    window.addEventListener('pageshow', function (e) { if (e.persisted) { pt.classList.remove('is-active', 'is-in', 'is-covered', 'is-out'); clearBoot(); } });
+  });
+  (function () {
+    var pos = null;
+    try { pos = JSON.parse(sessionStorage.getItem(LANG_KEY) || 'null'); sessionStorage.removeItem(LANG_KEY); } catch (e) {}
+    if (!pos) return;
+    var f = $('#contact-form');
+    if (f && pos.form) {
+      Object.keys(pos.form).forEach(function (n) { if (f.elements[n]) f.elements[n].value = pos.form[n]; });
+      if (pos.type && document.getElementById(pos.type)) document.getElementById(pos.type).checked = true;
+    }
+    var go = function () {
+      var el = pos.id && document.getElementById(pos.id), y;
+      if (el && el.offsetParent !== null) { var rc = el.getBoundingClientRect(); y = rc.top + window.scrollY + (pos.f || 0) * rc.height - (pos.f ? 0 : 96); }
+      else y = pos.r * (document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+    };
+    go(); window.addEventListener('load', go);
+  })();
+
+  /* ---------- analytics, only after the visitor accepts ---------- */
+  var gtmId = root.getAttribute('data-gtm'), consent = $('#consent');
+  window.dataLayer = window.dataLayer || [];
+  var loadGTM = function () {
+    if (window.__kiyanGTM || !gtmId) return; window.__kiyanGTM = 1;
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    var sc = document.createElement('script'); sc.async = true;
+    sc.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(gtmId);
+    document.head.appendChild(sc);
+  };
+  if (gtmId) {
+    var choice = null; try { choice = localStorage.getItem('kiyan-consent'); } catch (e) {}
+    if (choice === 'yes') loadGTM();
+    else if (choice !== 'no' && consent) consent.hidden = false;
+    $$('[data-consent]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.getAttribute('data-consent');
+        try { localStorage.setItem('kiyan-consent', v); } catch (e) {}
+        consent.hidden = true; if (v === 'yes') loadGTM();
+      });
+    });
   }
 
   /* ---------- theme ---------- */
@@ -213,32 +241,82 @@
     qs.forEach(function (q) { q.addEventListener('click', function () { q.setAttribute('aria-pressed', q.getAttribute('aria-pressed') !== 'true'); update(); }); });
   }
 
-  /* ---------- contact form ---------- */
+  /* ---------- contact form ----------
+     With a form key set in content.py the enquiry is sent from inside the page and the
+     visitor sees a thank-you. Without one it opens the visitor's own email, as before. */
   var form = $('#contact-form');
   if (form) {
     var params = new URLSearchParams(location.search), topic = params.get('topic'), gaps = params.get('gaps');
     if (params.get('type') === 'rfp') $('#ty-rfp').checked = true;
     if (params.get('type') === 'call') $('#ty-call').checked = true;
     if (topic && topic !== 'poc' && $('#f-topic option[value="' + topic + '"]')) $('#f-topic').value = topic;
-    if (gaps) $('#f-msg').value = fmt(T.q_prefill, { x: gaps }) + '\n\n';
+    if (gaps && !$('#f-msg').value) $('#f-msg').value = fmt(T.q_prefill, { x: gaps }) + '\n\n';
+    var val = function (n) { return (form.elements[n].value || '').trim(); };
     var compose = function () {
-      var v = function (n) { return (form.elements[n].value || '').trim(); };
       var sel = form.elements.topic;
       return {
-        subject: v('type') + ' — ' + (v('company') || T.m_new),
-        body: [T.m_enquiry + ': ' + v('type'), T.ct_name + ': ' + v('name'), T.ct_role + ': ' + v('role'), T.ct_company + ': ' + v('company'), T.ct_email + ': ' + v('email'),
-          T.m_pillar + ': ' + sel.options[sel.selectedIndex].text, '', v('message')].join('\n')
+        subject: val('type') + ' — ' + (val('company') || T.m_new),
+        pillar: sel.options[sel.selectedIndex].text,
+        body: [T.m_enquiry + ': ' + val('type'), T.ct_name + ': ' + val('name'), T.ct_role + ': ' + val('role'), T.ct_company + ': ' + val('company'), T.ct_email + ': ' + val('email'),
+          T.m_pillar + ': ' + sel.options[sel.selectedIndex].text, '', val('message')].join('\n')
       };
     };
+    var endpoint = form.getAttribute('data-endpoint'), key = form.getAttribute('data-key');
+    var done = $('#form-done'), ferr = $('#form-error'), sendBtn = $('button[type="submit"]', form);
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var m = compose();
-      location.href = 'mailto:info@kiyan.sa?subject=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(m.body);
+      if (!endpoint || !key || !window.fetch) {
+        location.href = 'mailto:info@kiyan.sa?subject=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(m.body);
+        return;
+      }
+      if (form.elements.botcheck.checked) return;          // a field people never see; only bots tick it
+      var label = sendBtn.innerHTML, type = val('type');
+      ferr.hidden = true; form.classList.add('is-sending'); sendBtn.textContent = sendBtn.getAttribute('data-sending');
+      fetch(endpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ access_key: key, subject: m.subject, from_name: 'Kiyan website', enquiry_type: type, name: val('name'), role: val('role'),
+          company: val('company'), email: val('email'), pillar: m.pillar, message: val('message'), language: document.documentElement.lang, page: location.href })
+      }).then(function (r) { return r.json().then(function (d) { if (!r.ok || d.success === false) throw new Error('send failed'); }); })
+        .then(function () {
+          form.reset(); form.hidden = true; done.hidden = false; done.focus();
+          window.dataLayer.push({ event: 'contact_form_submit', enquiry_type: type });
+        })
+        .catch(function () { ferr.hidden = false; })
+        .then(function () { form.classList.remove('is-sending'); sendBtn.innerHTML = label; });
     });
+    var again = $('#form-again');
+    if (again) again.addEventListener('click', function () { done.hidden = true; form.hidden = false; form.elements.name.focus(); });
     $('#wa-send').addEventListener('click', function (e) {
       var m = compose(); this.href = this.href.split('?')[0] + '?text=' + encodeURIComponent(m.subject + '\n\n' + m.body);
     });
   }
+
+  /* ---------- pillars page: the navigator follows the section on screen ---------- */
+  var pnav = $('#pnav');
+  if (pnav) {
+    var plinks = $$('a', pnav), psecs = plinks.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    var pwrap = $('.wrap', pnav), pcur = -1, pwait = 0;
+    var spy = function () {
+      var cur = -1;
+      psecs.forEach(function (sec, i) { if (sec && sec.getBoundingClientRect().top <= 170) cur = i; });
+      if (cur === pcur) return; pcur = cur;
+      plinks.forEach(function (a, i) { a.classList.toggle('is-current', i === cur); if (i === cur) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+      if (cur >= 0) pwrap.scrollTo({ left: plinks[cur].offsetLeft - (pwrap.clientWidth - plinks[cur].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+    };
+    window.addEventListener('scroll', function () { var n = Date.now(); if (n - pwait > 80) { pwait = n; spy(); } }, { passive: true });
+    window.addEventListener('scrollend', spy); spy();
+  }
+
+  /* ---------- articles: copy link ---------- */
+  $$('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var url = location.href.split('#')[0], label = b.textContent;
+      var ok = function () { b.textContent = b.getAttribute('data-done'); setTimeout(function () { b.textContent = label; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok, function () { window.prompt('', url); });
+      else window.prompt('', url);
+    });
+  });
 
   /* ---------- search palette ---------- */
   var sd = $('#search'), si = $('#search-input'), sr = $('#search-results'), active = 0, hits = [];

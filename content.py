@@ -297,3 +297,98 @@ UI.update({
     "pl_top": "Category management & retail execution", "pl_words": ["Where", "<b>intelligence</b>", "meets", "<em>execution.</em>"], "pl_bars": "Six pillars",
     "pg_names": {"index.html": "Home", "pillars.html": "Pillars", "how-we-work.html": "How we work", "team.html": "Team", "faq.html": "FAQ", "contact.html": "Contact", "legal.html": "Legal", "404.html": "Kiyan"},
 })
+
+# ===================================================================
+# Client review, November 2026. Everything below overrides the copy above.
+# ===================================================================
+
+# Site-wide switches. Leave a value empty to keep that feature off.
+SITE.update({
+    "gtm_id": "",        # Google Tag Manager container, e.g. "GTM-ABC1234". Loads only after the visitor accepts analytics.
+    "form_key": "",      # Web3Forms access key. When set, the contact form submits inside the page and emails info@kiyan.sa.
+    "form_endpoint": "https://api.web3forms.com/submit",
+})
+
+UI.update({
+    # "POC" is now spelled out for self-reading visitors
+    "cta_poc": "Explore a free pilot", "cta_call": "Request a discovery call",
+    "foot_poc": "Free pilot", "poc_eyebrow": "Free pilot", "mega_feat_tag": "Free pilot",
+    "poc_h": "Explore a free pilot.", "pp_poc": "Explore a free pilot on this pillar",
+    "q_poc": " With several gaps open, a one-store pilot is the quickest way to see which matters most.",
+    "ct_p": "Explore a free pilot, request a discovery call or send your RFP. A partner will reply.",
+    "ct_types": ["Free pilot", "Discovery call", "RFP"],
+    "t_contact": "Contact Kiyan: explore a free pilot or request a call",
+    "d_contact": "Explore a free one-week pilot, request a discovery call or submit an RFP. Email info@kiyan.sa or message Kiyan on WhatsApp.",
+    "d_how": "Kiyan is the independent category management partner between manufacturer and retailer. How a project runs, and the free one-week pilot.",
+    "d_faq": "Answers about Kiyan: the six pillars, category management, retail census, AI shelf audits and the free pilot.",
+    # headline claims and audit figures removed until they can be evidenced
+    "stats": [], "proof_stats": [],
+    "proof_p": "Field teams capture the shelf. Image recognition reports availability, share of shelf and planogram compliance, and every gap becomes a task that is tracked until it is closed.",
+    "tm_portrait": "Portrait of {name}, partner at Kiyan",
+    # the execution gap, retold as a shelf that empties
+    "gap_cap": "The stories we heard and where Kiyan can help",
+    "gap_alt": "Four shelves, from strategy to execution. The first is full and ordered; each one after it holds fewer products, less neatly placed.",
+    # contact form, sent from inside the page
+    "ct_send_inline": "Send enquiry", "ct_sending": "Sending…",
+    "ct_note_inline": "Your enquiry goes straight to the Kiyan partners. We use your details only to reply to you.",
+    "ct_ok_h": "Thank you. Your enquiry is on its way.", "ct_ok_p": "A Kiyan partner will reply to you by email.", "ct_again": "Send another enquiry",
+    "ct_err": "The form could not be sent. Please email info@kiyan.sa or message us on WhatsApp.",
+    # pillars page navigator
+    "pp_nav": "Jump to a pillar",
+    # intelligence (articles)
+    "nav_intel": "Intelligence", "in_crumb": "Intelligence", "in_eyebrow": "Intelligence",
+    "in_h": "Notes from the shelf.", "in_p": "Articles from the Kiyan partners on category management, retail execution and what it takes to carry a decision into the store.",
+    "in_empty": "The first articles are being written. Check back soon.",
+    "in_read": "Read article", "in_min": "{n} min read", "in_by": "By {x}", "in_back": "All articles", "in_more": "More from Intelligence",
+    "in_share": "Share", "in_copy": "Copy link", "in_copied": "Link copied", "in_home_h": "Latest from Intelligence.", "in_all": "All articles",
+    "t_intel": "Intelligence: articles on category management and retail execution | Kiyan",
+    "d_intel": "Articles from the Kiyan partners on category management, retail execution and closing the gap between the decision and the shelf.",
+    "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    # analytics consent
+    "ck_p": "We would like to use analytics to understand how this site is used and improve it. Nothing is collected unless you accept.",
+    "ck_yes": "Accept analytics", "ck_no": "Decline", "ck_label": "Analytics consent",
+})
+UI["mg_items"] = [("how-we-work.html", "table", "How we work", "One table, three roles, one shared objective"),
+                  ("index.html#execution-gap", "gap", "The execution gap", "Why value leaks between plan and shelf"),
+                  ("intelligence.html", "note", "Intelligence", "Articles from the Kiyan partners"),
+                  ("team.html", "people", "Team", "The partners who do the work"),
+                  ("how-we-work.html#poc", "flask", "Free pilot", "One store, one category, one week"),
+                  ("faq.html", "help", "FAQ", "Plain answers before a first call"),
+                  ("how-we-work.html#careers", "case", "Careers", "Join a small senior team"),
+                  ("contact.html", "mail", "Contact", "Riyadh, Istanbul and Cairo")]
+UI["pg_names"]["intelligence.html"] = "Intelligence"
+
+GAP.update({
+    "title": "Value leaks between the decision and the shelf.",
+    "lede": "When strategy isn’t translated into simple store action, it never reaches the shopper. Most companies hold the data, write the strategy and present the slides, then lose the return somewhere between the boardroom and the shelf.",
+    # (title, line, products still on the shelf out of 9, how untidy: 0 ordered … 3 scattered)
+    "shelf": [("Strategy designed", "Decision: category priorities and commercial objectives are clear.", 9, 0),
+              ("Category defined", "Translation: assortment, space, adjacency and shelf rules need one connected logic.", 8, 1),
+              ("Space planned", "Realisation: category allocation and product facings.", 6, 2),
+              ("Shelf executed", "Result: availability, visibility and compliance.", 4, 3)],
+    "points": [("The decision", "Strategy is rarely the problem.", "Brand owners are well supplied with POS data, syndicated reports, supplier decks and category reviews."),
+               ("The translation", "Insight gets lost in translation.", "Strategy and execution live in different silos. Insight rarely becomes a price tag, a planogram or a store action."),
+               ("The shelf", "Reality is decided on the shelf.", "On-shelf availability, share and margin are confirmed in-store, not in the slide deck.")],
+})
+
+def _pillar(pid): return next(p for p in PILLARS if p["id"] == pid)
+_pillar("reach").pop("kpis", None)
+_pillar("reach")["cards"] = [
+    ("Retail census & store universe", ["Every relevant outlet scanned and mapped to GIS coordinates.", "Stores auto-graded Gold, Silver or Bronze from the premium brands on their shelves."], "A verified store universe replaces estimated counts and blind spots."),
+    ("Channel structure & coverage design", ["Outlets classified into the KSA channel framework: modern trade, self service, traditional trade, wholesale and HORECA.", "Coverage and call plans sized by outlet value, density and city tier."], "Field effort aimed at the outlets that carry the category.")]
+_pillar("execution").pop("kpis", None)
+_c = _pillar("execution")["cards"]
+_c[0] = ("AI image-recognition shelf audit", ["Every store, every week, captured by the field force.", "Every SKU photographed and every shelf position recorded."], _c[0][2])
+
+FAQ[6] = ("What is a retail census or store universe?", "A retail census is a physical count and classification of every relevant outlet in a market. Kiyan’s store universe goes further than a directory: each outlet is mapped to GIS coordinates and understood on three layers, which are what surrounds it, the store itself and what happens inside it.")
+FAQ[7] = ("How does the AI shelf audit work?", "Field teams photograph the shelf. Image recognition then reports on-shelf availability, share of shelf and planogram compliance from the same capture. Each gap becomes a task with a specific SKU, position and resolve window, and the shelf is re-captured to verify closure.")
+FAQ[8] = ("What is the free pilot?", "Kiyan offers a pilot at no cost and with no commitment: one store, one category, one week. You share the current planogram or realogram for the pilot store, product images and dimensions, and your category vision. Kiyan returns redesigned planogram scenarios with the justification, and supports implementation and evaluation.")
+FAQ[11] = ("How do I start working with Kiyan?", "Confirm a pilot store and category for a free pilot, request a discovery call, or send your RFP to info@kiyan.sa.")
+
+# Paragraphs that replace the standing legal text once a feature is switched on in SITE.
+# (section id, paragraph number, text)
+LEGAL_FORM = [("privacy", 1, "The contact form sends what you enter (your name, role, company, work email and message) to Kiyan by email through a form-delivery service, so that a partner can reply. It is not stored on this website.")]
+LEGAL_GTM = [("privacy", 0, "This website does not ask you to create an account and does not run advertising. With your consent it uses Google Tag Manager and Google Analytics to measure how the site is used."),
+             ("security", 1, "Fonts, images and the site's own scripts are served from this site itself. If you accept analytics, Google Tag Manager is loaded from Google."),
+             ("cookies", 0, "Analytics cookies are set only if you choose “Accept analytics” on the notice shown on your first visit. If you decline, none are set."),
+             ("cookies", 2, "You can change your mind at any time by clearing this site's data in your browser settings; the notice will be shown again on your next visit.")]

@@ -1,0 +1,45 @@
+# Kiyan content editor (Sveltia CMS, compatible with Decap CMS).
+# Articles are saved as JSON files in content/intelligence/ in the GitHub repository.
+# Each save is a commit; the "Deploy to GitHub Pages" workflow then rebuilds the site.
+
+backend:
+  name: github
+  repo: EajazAli/kiyan-site      # change this if the repository moves
+  branch: main
+  # For a "Sign in with GitHub" button (instead of pasting a token), deploy a sign-in
+  # helper (for example the free sveltia-cms-auth Cloudflare Worker) and set its address:
+  # base_url: https://your-auth-worker.workers.dev
+
+site_url: https://kiyan.sa
+media_folder: assets/img/intelligence
+public_folder: /assets/img/intelligence
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: intelligence
+    label: Intelligence articles
+    label_singular: Article
+    description: Articles shown on the Intelligence page. Fill in English, Arabic or both; an article appears in each language that has a title and a body.
+    folder: content/intelligence
+    extension: json
+    format: json
+    create: true
+    delete: true
+    identifier_field: title_en
+    slug: "{{slug}}"
+    summary: "{{title_en}} · {{date}}"
+    sortable_fields: [date, title_en]
+    fields:
+      - { name: date, label: Publish date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: draft, label: "Draft (keep off the website)", widget: boolean, default: false, required: false }
+      - { name: author, label: Author, widget: string, required: false, hint: "Shown as 'By …'. Leave empty to publish as Kiyan." }
+      - { name: image, label: Cover image, widget: image, required: false, hint: "Landscape, about 1600 x 900. Also used when the article is shared." }
+      - { name: title_en, label: Title (English), widget: string }
+      - { name: summary_en, label: Summary (English), widget: text, required: false, hint: "One or two sentences. Shown on the article list and when the link is shared." }
+      - { name: body_en, label: Article (English), widget: markdown, required: false }
+      - { name: title_ar, label: "العنوان (Arabic title)", widget: string, required: false }
+      - { name: summary_ar, label: "الملخص (Arabic summary)", widget: text, required: false }
+      - { name: body_ar, label: "المقال (Arabic article)", widget: markdown, required: false }

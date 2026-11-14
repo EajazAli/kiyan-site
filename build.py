@@ -131,7 +131,7 @@ def art_img(kind):
     return f'<img src="{A}assets/img/art-{kind}.svg" alt="" width="960" height="400" loading="lazy" style="inline-size:100%;block-size:100%;object-fit:cover">'
 
 def universe_svg():
-    fam = "Noto Kufi Arabic, sans-serif" if is_ar() else "Poppins, sans-serif"
+    fam = "Tajawal, sans-serif" if is_ar() else "Poppins, sans-serif"
     ls = "0" if is_ar() else "1.2"; big, small = ("15", "11.5") if is_ar() else ("11", "8.5")
     return f'''<svg viewBox="0 0 520 440" role="img" aria-label="{e(t("svg_label"))}" xmlns="http://www.w3.org/2000/svg" font-family="{fam}" font-size="{big}" letter-spacing="{ls}" direction="{C.DIR}">
 <circle cx="260" cy="220" r="208" fill="none" stroke="#86BC25" stroke-width="1.5" stroke-dasharray="2 7" stroke-linecap="round"/>
@@ -352,7 +352,7 @@ def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=Tru
     lds += list(extra_ld)
     alt = ("".join(f'<link rel="alternate" hreflang="{l}" href="{url_for(l, fname)}">\n' for l in langs) + f'<link rel="alternate" hreflang="x-default" href="{url_for(langs[0], fname)}">') if listed else ""
     alt += f'\n<link rel="alternate" type="application/rss+xml" title="{e(t("nav_intel"))}" href="{A}{"ar/" if is_ar() else ""}feed.xml">'
-    if is_ar(): fonts = f'<link rel="preload" href="{A}assets/fonts/noto-kufi-arabic-arabic-600-normal.woff2" as="font" type="font/woff2" crossorigin>'
+    if is_ar(): fonts = f'<link rel="preload" href="{A}assets/fonts/tajawal-arabic-700-normal.woff2" as="font" type="font/woff2" crossorigin>'
     else: fonts = '<link rel="preload" href="assets/fonts/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="assets/fonts/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>'
     robots = "index, follow, max-snippet:-1, max-image-preview:large" if listed else "noindex"
     out = f'''<!doctype html>

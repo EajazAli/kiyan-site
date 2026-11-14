@@ -37,7 +37,7 @@ search index. Do not edit the `.html` files by hand; the next build overwrites t
 - AEO / GEO: JSON-LD (Organization, ProfessionalService, Service, FAQPage, BreadcrumbList, Person),
   answer-first FAQ, `llms.txt` in both languages, AI crawlers explicitly allowed
 - Light and dark themes, site search (Ctrl/⌘ K), keyboard-accessible tabs and dialogs, reduced-motion support
-- Self-hosted fonts (Poppins, Noto Kufi Arabic; SIL Open Font License). No third-party requests unless Tag Manager or the form service is switched on.
+- Self-hosted fonts (Poppins, Tajawal for Arabic; SIL Open Font License). No third-party requests unless Tag Manager or the form service is switched on.
 
 ## Before launch
 - Have counsel review the Terms, Privacy, Security and Cookie text (`LEGAL` in `content.py` / `content_ar.py`).

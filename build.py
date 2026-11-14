@@ -346,7 +346,7 @@ def consent_banner():
 def page(fname, title, desc, body, trail=None, extra_ld=(), cta=True, listed=True, image=None, og_type="website", langs=("en", "ar")):
     url = url_for(C.LANG, fname)
     image = image or f"{BASE}/assets/img/og.png"
-    gtm = f' data-gtm="{e(C.SITE["gtm_id"])}"' if C.SITE.get("gtm_id") else ""
+    gtm = f' data-gtm="{e(C.SITE["gtm_id"])}" data-gtm-hosts="{e(",".join(C.SITE.get("gtm_hosts", [])))}"' if C.SITE.get("gtm_id") else ""
     lds = [org_ld(), {"@context": "https://schema.org", "@type": "WebSite", "@id": BASE + "/#website", "url": BASE + "/", "name": "Kiyan", "inLanguage": ["en", "ar"], "publisher": {"@id": BASE + "/#organization"}}]
     if trail: lds.append(crumbs_ld([("index.html", t("home"))] + trail))
     lds += list(extra_ld)

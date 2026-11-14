@@ -62,6 +62,8 @@
 
   /* ---------- analytics, only after the visitor accepts ---------- */
   var gtmId = root.getAttribute('data-gtm'), consent = $('#consent');
+  var gtmHosts = (root.getAttribute('data-gtm-hosts') || '').split(',').filter(Boolean);
+  if (gtmHosts.length && gtmHosts.indexOf(location.hostname) < 0) gtmId = null;      // preview and local copies are never measured
   window.dataLayer = window.dataLayer || [];
   var loadGTM = function () {
     if (window.__kiyanGTM || !gtmId) return; window.__kiyanGTM = 1;

@@ -304,8 +304,9 @@ UI.update({
 
 # Site-wide switches. Leave a value empty to keep that feature off.
 SITE.update({
-    "gtm_id": "",        # Google Tag Manager container, e.g. "GTM-ABC1234". Loads only after the visitor accepts analytics.
-    "form_key": "",      # Web3Forms access key. When set, the contact form submits inside the page and emails info@kiyan.sa.
+    "gtm_id": "GTM-M3MW2MDG",   # Google Tag Manager container. Loads only after the visitor accepts analytics.
+    "gtm_hosts": ["kiyan.sa", "www.kiyan.sa"],   # analytics runs only on these addresses, so preview and test visits are not counted
+    "form_key": "7cff244e-c96a-4f5f-91a5-f368281894f4",   # Web3Forms access key (public by design). Enquiries are emailed to the address on that Web3Forms account.
     "form_endpoint": "https://api.web3forms.com/submit",
 })
 

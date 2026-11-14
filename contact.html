@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr" class="no-js" data-theme="dark">
+<html lang="en" dir="ltr" class="no-js" data-theme="dark" data-gtm="GTM-M3MW2MDG" data-gtm-hosts="kiyan.sa,www.kiyan.sa">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -72,7 +72,7 @@
 <section class="section section--tight"><div class="wrap"><div class="contact-grid">
   <div class="form-wrap">
   <div class="form-done" id="form-done" role="status" tabindex="-1" hidden><h2>Thank you. Your enquiry is on its way.</h2><p>A Kiyan partner will reply to you by email.</p><button class="btn btn--ghost" type="button" id="form-again">Send another enquiry</button></div>
-  <form class="form" id="contact-form" action="mailto:info@kiyan.sa" method="post" enctype="text/plain">
+  <form class="form" id="contact-form" action="mailto:info@kiyan.sa" method="post" enctype="text/plain" data-endpoint="https://api.web3forms.com/submit" data-key="7cff244e-c96a-4f5f-91a5-f368281894f4">
     <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div><span class="sr-only" id="type-l">Enquiry type</span><div class="seg" role="radiogroup" aria-labelledby="type-l">
       <input type="radio" name="type" id="ty-poc" value="Free pilot" checked><label for="ty-poc">Free pilot</label>
@@ -84,9 +84,9 @@
     <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" dir="ltr" autocomplete="email" required></div></div>
     <div class="field"><label for="f-topic">Which pillar?</label><select id="f-topic" name="topic"><option value="">Not sure yet</option><option value="reach">Right Reach</option><option value="category">Right Category</option><option value="range">Right Range</option><option value="store">Right Store</option><option value="space">Right Space</option><option value="execution">Right Execution</option></select></div>
     <div class="field"><label for="f-msg">Pilot store and category, or the decision you are facing</label><textarea id="f-msg" name="message" placeholder="A few lines is enough. Which store and category would you pilot, or what are you trying to decide?"></textarea></div>
-    <div class="btn-row" style="margin-top:0"><button class="btn btn--primary" type="submit" data-sending="Sending…">Send by email <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg></button><a class="btn btn--ghost" id="wa-send" href="https://wa.me/966541373036" rel="noopener">Send on WhatsApp</a></div>
+    <div class="btn-row" style="margin-top:0"><button class="btn btn--primary" type="submit" data-sending="Sending…">Send enquiry <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg></button><a class="btn btn--ghost" id="wa-send" href="https://wa.me/966541373036" rel="noopener">Send on WhatsApp</a></div>
     <p class="form-error" id="form-error" role="alert" hidden>The form could not be sent. Please email info@kiyan.sa or message us on WhatsApp.</p>
-    <p class="form-note">Sending opens your own email or WhatsApp with the message filled in, so nothing is stored on this site.</p>
+    <p class="form-note">Your enquiry goes straight to the Kiyan partners. We use your details only to reply to you.</p>
   </form>
   </div>
   <aside class="contact-list" aria-label="Direct contacts">
@@ -122,6 +122,10 @@
   <div class="search-in"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13.5 13.5 4 4"/></svg><input id="search-input" type="search" placeholder="Search pillars, solutions, people…" autocomplete="off" aria-label="Search the site"><button class="icon-btn" id="search-close" aria-label="Close"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
   <div class="search-results" id="search-results" role="listbox"></div>
 </dialog>
+<div class="consent" id="consent" role="dialog" aria-label="Analytics consent" hidden>
+  <p>We would like to use analytics to understand how this site is used and improve it. Nothing is collected unless you accept. <a href="legal.html#cookies">Cookie Preferences</a></p>
+  <div class="consent-btns"><button class="btn btn--ghost" data-consent="no">Decline</button><button class="btn btn--primary" data-consent="yes">Accept analytics</button></div>
+</div>
 <script src="assets/js/data-en.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 </body>

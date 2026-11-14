@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl" class="no-js" data-theme="dark">
+<html lang="ar" dir="rtl" class="no-js" data-theme="dark" data-gtm="GTM-M3MW2MDG" data-gtm-hosts="kiyan.sa,www.kiyan.sa">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -71,7 +71,7 @@
 <section class="section section--tight"><div class="wrap"><div class="contact-grid">
   <div class="form-wrap">
   <div class="form-done" id="form-done" role="status" tabindex="-1" hidden><h2>شكرًا لكم. طلبكم في الطريق.</h2><p>سيردّ عليكم أحد شركاء كيان عبر البريد الإلكتروني.</p><button class="btn btn--ghost" type="button" id="form-again">إرسال طلب آخر</button></div>
-  <form class="form" id="contact-form" action="mailto:info@kiyan.sa" method="post" enctype="text/plain">
+  <form class="form" id="contact-form" action="mailto:info@kiyan.sa" method="post" enctype="text/plain" data-endpoint="https://api.web3forms.com/submit" data-key="7cff244e-c96a-4f5f-91a5-f368281894f4">
     <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div><span class="sr-only" id="type-l">نوع الطلب</span><div class="seg" role="radiogroup" aria-labelledby="type-l">
       <input type="radio" name="type" id="ty-poc" value="تجربة مجانية" checked><label for="ty-poc">تجربة مجانية</label>
@@ -83,9 +83,9 @@
     <div class="field"><label for="f-email">البريد الإلكتروني للعمل</label><input id="f-email" name="email" type="email" dir="ltr" autocomplete="email" required></div></div>
     <div class="field"><label for="f-topic">أي ركيزة؟</label><select id="f-topic" name="topic"><option value="">لست متأكدًا بعد</option><option value="reach">الوصول الصحيح</option><option value="category">الفئة الصحيحة</option><option value="range">التشكيلة الصحيحة</option><option value="store">المتجر الصحيح</option><option value="space">المساحة الصحيحة</option><option value="execution">التنفيذ الصحيح</option></select></div>
     <div class="field"><label for="f-msg">متجر التجربة والفئة، أو القرار الذي أمامكم</label><textarea id="f-msg" name="message" placeholder="تكفي بضعة أسطر. أي متجر وفئة تودّون تجربتهما، أو ما القرار الذي تحاولون اتخاذه؟"></textarea></div>
-    <div class="btn-row" style="margin-top:0"><button class="btn btn--primary" type="submit" data-sending="جارٍ الإرسال…">أرسل بالبريد الإلكتروني <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg></button><a class="btn btn--ghost" id="wa-send" href="https://wa.me/966541373036" rel="noopener">أرسل عبر واتساب</a></div>
+    <div class="btn-row" style="margin-top:0"><button class="btn btn--primary" type="submit" data-sending="جارٍ الإرسال…">أرسلوا الطلب <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg></button><a class="btn btn--ghost" id="wa-send" href="https://wa.me/966541373036" rel="noopener">أرسل عبر واتساب</a></div>
     <p class="form-error" id="form-error" role="alert" hidden>تعذّر إرسال النموذج. راسلونا على info@kiyan.sa أو عبر واتساب.</p>
-    <p class="form-note">عند الإرسال يُفتح بريدكم الإلكتروني أو واتساب والرسالة جاهزة، فلا تُحفظ أي بيانات على هذا الموقع.</p>
+    <p class="form-note">يصل طلبكم مباشرة إلى شركاء كيان. ونستخدم بياناتكم للرد عليكم فقط.</p>
   </form>
   </div>
   <aside class="contact-list" aria-label="للتواصل المباشر">
@@ -121,6 +121,10 @@
   <div class="search-in"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13.5 13.5 4 4"/></svg><input id="search-input" type="search" placeholder="ابحث عن ركيزة أو حل أو شخص…" autocomplete="off" aria-label="ابحث في الموقع"><button class="icon-btn" id="search-close" aria-label="إغلاق"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
   <div class="search-results" id="search-results" role="listbox"></div>
 </dialog>
+<div class="consent" id="consent" role="dialog" aria-label="الموافقة على التحليلات" hidden>
+  <p>نودّ استخدام أدوات التحليل لفهم كيفية استخدام الموقع وتحسينه. لا يُجمع أي شيء ما لم توافقوا. <a href="legal.html#cookies">تفضيلات ملفات الارتباط</a></p>
+  <div class="consent-btns"><button class="btn btn--ghost" data-consent="no">أرفض</button><button class="btn btn--primary" data-consent="yes">أوافق على التحليلات</button></div>
+</div>
 <script src="../assets/js/data-ar.js" defer></script>
 <script src="../assets/js/main.js" defer></script>
 </body>

@@ -963,7 +963,7 @@ h4{font-size:1.125rem;line-height:1.5}
 @media (max-width:980px){.hcard .hcard-media{aspect-ratio:4/2.8}}
 /* ---------- proof photograph ---------- */
 .proof-shot{margin:0;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.14);aspect-ratio:16/10;background:#100F0F}
-.proof-shot img{inline-size:100%;block-size:100%;object-fit:cover;object-position:50% 45%;filter:saturate(.72) contrast(1.06)}
+.proof-shot img{inline-size:100%;block-size:100%;object-fit:cover;object-position:50% 45%}
 .proof-shot + .proof-stats{margin-top:clamp(20px,2.4vw,32px)}
 [lang="ar"] .pl-word span{padding-block:.1em .3em}
 

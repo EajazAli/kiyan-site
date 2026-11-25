@@ -66,60 +66,6 @@
       }
     },
     {
-      "id": "saif-abedi",
-      "name": "Saif Abedi",
-      "role": "Founder",
-      "group": "Partners",
-      "focus": [
-        "Leadership"
-      ],
-      "photo": "saif-abedi.webp",
-      "summary": "16+ years in data, commercial strategy and customer experience across Saudi Arabia and the GCC, on both the agency and the client side.",
-      "career": [
-        [
-          "Senior CRM & Insights Manager",
-          "Saudi Entertainment Ventures (SEVEN)"
-        ],
-        [
-          "Head of Market Research & Intelligence",
-          "Goody"
-        ],
-        [
-          "Business Group Manager",
-          "GfK"
-        ],
-        [
-          "Client team lead, FMCG",
-          "Nielsen"
-        ]
-      ],
-      "email": "saif.abedi@kiyan.sa",
-      "linkedin": "",
-      "ar": {
-        "name": "سيف عابدي",
-        "role": "المؤسس",
-        "summary": "أكثر من 16 عامًا في البيانات والاستراتيجية التجارية وتجربة العملاء في المملكة العربية السعودية ودول الخليج، من جانبَي الوكالة والعميل.",
-        "career": [
-          [
-            "مدير أول لإدارة علاقات العملاء والرؤى",
-            "Saudi Entertainment Ventures (SEVEN)"
-          ],
-          [
-            "رئيس أبحاث السوق والمعلومات",
-            "Goody"
-          ],
-          [
-            "مدير مجموعة أعمال",
-            "GfK"
-          ],
-          [
-            "قائد فريق عملاء السلع الاستهلاكية",
-            "Nielsen"
-          ]
-        ]
-      }
-    },
-    {
       "id": "khaled-anwar",
       "name": "Khaled Anwar",
       "role": "Demand Space Partner",
